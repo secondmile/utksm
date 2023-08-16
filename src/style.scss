@@ -1,0 +1,28 @@
+/*
+Theme Name: University of Tennessee, Knoxville Admissions
+Theme URI: http://communications.utk.edu
+Description: Child theme for UT (following UTKWDS) by Second Mile
+Author: Second Mile Web Team
+Author URI: https://utka.smdev.cc/
+Template: utkwds
+Version: 1.0
+*/
+
+// Utility & Layout
+
+// UT Components
+// @import 'scss/components/button';
+
+// @import 'scss/styles/background';
+// @import 'scss/styles/borders';
+// @import 'scss/styles/box-shadows';
+
+// UTKSM Overrides (tread lightly)
+// @import 'scss/styles/utksm-overrides';
+// @import 'scss/styles/utksm-plugin-overrides';
+
+// UT Regions
+// @import 'scss/regions/footers';
+
+// Second Mile
+@import 'scss/sm-temp-styles.scss';

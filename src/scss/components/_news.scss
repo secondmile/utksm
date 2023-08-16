@@ -1,0 +1,91 @@
+@media (min-width: 600px) {
+  .utkwds-news-2up,
+  .utkwds-news-3up {
+    li{
+      border-right: 2px solid var(--wp--preset--color--orange);
+      
+    }
+    li:last-child {
+      border-right: none;
+    }
+  }
+  .utkwds-news-2up li {
+    border-image: linear-gradient(to bottom,
+      rgb(255, 130, 0) 0,
+      rgb(255, 130, 0) 85%,
+      rgba(255, 255, 255, 0) 85%);
+    border-image-slice: 1;
+    padding-right: 20px;
+  }
+  .utkwds-news-3up li {
+    border-image: linear-gradient(to bottom,
+      rgba(255, 255, 255, 0) 25%,
+      rgb(255, 130, 0) 25%,
+      rgb(255, 130, 0) 100%
+    );
+    border-image-slice: 1;
+    padding-right: 20px;
+  }
+}
+
+// rockey top arrow
+.utkwds-news-2up .wp-block-post-date,
+.utkwds-news-3up li {
+
+    &::after {
+      content: url('./assets/svg/rocky-top-arrow-02.svg');
+      transform: scale(.25);
+      transform-origin: top left;
+      display: block;
+      position: absolute;
+      transition: all .2s ease-out;
+      padding-top: 2rem;
+    }
+    
+    &:hover::after {
+      margin-left: .4rem;
+    }
+}
+
+.utkwds-news-2up li.wp-block-post {
+  &:hover .wp-block-post-date::after {
+      margin-left: .4rem;
+    } 
+}
+
+//
+.utkwds-news-2up li.wp-block-post a,
+.utkwds-news-3up li.wp-block-post a {
+  text-decoration-line: none;
+  &:hover,
+  &:focus {
+    color: var(--wp--custom--color--river);
+  }
+}
+
+// card click area
+.utkwds-news-2up li.wp-block-post,
+.utkwds-news-3up li.wp-block-post {
+  position: relative;
+}
+.utkwds-news-2up li.wp-block-post a,
+.utkwds-news-3up li.wp-block-post a {
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
+.wp-block-query.utkwds-query .wp-block-post-title a,
+.wp-block-query.utkwds-query-news .wp-block-post-title a{
+  color: var(--wp--custom--color--smokey);
+  text-decoration: none;
+  &:hover,
+  &:focus {
+    color: var(--wp--custom--color--river);
+  }
+}
+

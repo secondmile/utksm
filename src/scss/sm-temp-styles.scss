@@ -1,0 +1,224 @@
+// TODO: Integrate these styles with the rest of what's been built
+// This was developed in parallel in vanilla css
+// Yes, this made me cry, i would love to sassify it all; obvious mixins are
+
+
+/* Utility
+---------------------------------------------------------------------------- */
+
+.z-index--behind {
+	position: relative;
+	z-index: 1;
+}
+
+.z-index--front {
+	position: relative;
+	z-index: 2;
+}
+
+.overflow-clip--x {
+	overflow-x: hidden;
+}
+
+.underhang--right {
+	background: #fff;
+}
+
+@media only screen and (min-width: 781px) {
+	.underhang--top {
+		position:relative;
+		top: -84px;
+		height: calc(100% + 122px);
+	}
+	// Adjusts the height of underhang elements (needed some places (inline content), but not others (footer)
+	.underhang--top--clip-y {
+		margin-bottom: -84px!important;
+	}
+
+	.underhang--right {
+		background: linear-gradient(to right,  #fff 0%,#fff 80%,transparent 50%,transparent 100%);
+	}
+
+}
+
+/* Backgrounds */
+
+$textures: (
+	excitement: url('assets/images/texture-ut-excitement.jpg')
+);
+
+@each $key, $value in $textures {
+	.background-texture__#{$key} {
+		background-image: $value;
+		background-size: cover;
+		background-position: center center;
+	}
+}
+
+// Patterns like dots that contain unique alignment and follow a single repeating axis
+// note: transforms effect content, so I opted to create more files rather than be clever
+$patterns: (
+  "orange": (
+    top: url('assets/svg/square-dot-orange-top.svg'),
+    right: url('assets/svg/square-dot-orange-right.svg'),
+    bottom: url('assets/svg/square-dot-orange-vert.svg'),
+    left: url('assets/svg/square-dot-orange-horiz.svg'),
+  ),
+  "gray": (
+    top: url('assets/svg/square-dot-gray-top.svg'),
+    right: url('assets/svg/square-dot-gray-right.svg'),
+    bottom: url('assets/svg/square-dot-gray-vert.svg'),
+    left: url('assets/svg/square-dot-gray-horiz.svg'),
+  ),
+);
+
+@each $color, $directions in $patterns {
+  @each $direction, $url in $directions {
+    .background-dots__#{$color}--#{$direction} {
+      background-image: $url;
+	  
+      // Add specific alignment for each direction
+      @if $direction == top {
+		  background-position: top center;
+		  background-repeat: repeat-x;
+		  background-position: center top;
+		} @else if $direction == right {
+			background-position: center right;
+			background-repeat: repeat-y;
+			background-position: right;
+		} @else if $direction == bottom {
+			background-position: bottom center;
+			background-repeat: repeat-x;
+			background-position: center bottom;
+		} @else if $direction == left {
+			background-position: center left;
+			background-repeat: repeat-y;
+			background-position: left;
+      }
+
+    }
+  }
+}
+
+// Background Blend Modes; uncomment as classes are needed. This reduces page resource calls for patterns/etc
+// Make this into a map/function if it gets any more complex
+.is-style--background-blend-mode{
+	&--color-burn {
+		background-blend-mode: color-burn;
+	}
+
+	&--multiply {
+		background-blend-mode: multiply;
+	}
+
+	&--screen {
+		background-blend-mode: screen;
+	}
+
+	&--color-dodge {
+		background-blend-mode: color-dodge;
+	}
+
+	&--normal {
+		background-blend-mode: normal;
+	}
+}
+
+/* Borders */
+$border-sizes: (
+  small: 4px,
+  medium: 10px,
+  xlarge: 80px
+);
+
+$border-directions: (top, right, bottom, left);
+
+@each $size, $width in $border-sizes {
+  @each $direction in $border-directions {
+    .border-#{$direction}--#{$size} {
+      border-#{$direction}: #{$width} solid var(--wp--preset--color--orange);
+    }
+  }
+}
+
+
+/* Box Shadow */
+$box-shadow-sizes: (
+  large: 20px,
+  medium: 10px
+);
+
+$box-shadow-directions: (
+  top-left, top-right, bottom-right, bottom-left
+);
+
+@each $size, $offset in $box-shadow-sizes {
+  @each $direction in $box-shadow-directions {
+    .box-shadow__#{$direction}--#{$size} {
+      $x-offset: if($direction == "top-right" or $direction == "bottom-right", $offset, -$offset);
+      $y-offset: if($direction == "bottom-left" or $direction == "bottom-right", $offset, -$offset);
+      box-shadow: #{$x-offset} #{$y-offset} 0 0 var(--wp--preset--color--orange);
+    }
+  }
+}
+
+/* Border */
+.has-border-primary {
+	border: 1px solid var(--wp--preset--color--orange);
+}
+
+.has-border-radius {
+	border-radius: 5px;
+}
+
+/* Images */
+.image-offset--50 {
+	overflow: hidden;
+}
+
+.image-offset--50 > img {
+	left: 50% !important; /* warning: overrides grid */
+}
+
+/* Footer
+---------------------------------------------------------------------------- */
+.site-footer {
+	overflow-x: hidden;
+
+	// !!! There is a conflict in the footer approaches, but deadline constrains graceful resolution
+	// Fix this
+	&::before {
+		display: none!important;
+	}
+}
+
+// Pre-footer element margin-bottom injected via _fixes.scss
+//		.wp-block-post-content > *:last-child,
+// 		.wp-block-post-content > .has-white-background-color:last-child { ... }
+#prefooter {
+	margin-bottom: 0 !important;
+}
+
+#utk_footer_logo {
+    max-width: 300px;
+    margin-bottom: 2rem;
+}
+
+
+/* UTKWDS Parent Overrides
+--------------------------------------------------------------------------- */
+
+ul.utkwds-jump-link-list.sm-jump-link-list {
+	padding-bottom: 0;
+	border-bottom: 0;
+}
+
+/* UTKDS Plugin Overrides (comment reasoning/justification)
+--------------------------------------------------------------------------- */
+.wp-block-utk-wds-accordion-panel {
+	.utk-wds-accordion__heading {
+		// The default color for this is webfont "blue" assigned by a var --utk-accordion--panel-heading-text
+		// If more extensive changes occur, it makes sense to do this in its own file. So far this is the only deviation from the plugin
+		color: var(--wp--preset--color--smokey-x);
+	}
+}
