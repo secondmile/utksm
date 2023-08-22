@@ -93,6 +93,110 @@ function add_gform_script_to_page($content) {
     return $content;
 }
 
-add_filter('the_content', 'add_gform_script_to_page');
 
+// GFORM + Custom Loop Check
+function fetch_counselor_form_data() {
+    $counselor_specialization = '';
+    $counselor_state = '';
+    $counselor_country = '';
+
+    if (class_exists('RGFormsModel')) {
+        $form_id = 3;
+        $entries = GFAPI::get_entries($form_id);
+
+        foreach ($entries as $entry) {
+            $counselor_specialization = rgar($entry, '6');
+            $counselor_state = rgar($entry, '8');
+            $counselor_country = rgar($entry, '9');
+            break; // Fetch the first entry only
+        }
+    }
+
+    return array(
+        'specialization' => $counselor_specialization,
+        'state' => $counselor_state,
+        'country' => $counselor_country,
+    );
+}
+
+function perform_counselor_query($specialization, $state, $country) {
+    // Custom Loop Query
+    $args = array(
+        'post_type' => 'counselor',
+        'meta_query' => array(
+            'relation' => 'AND',
+            array(
+                'key' => 'counselor_country',
+                'value' => $country,
+                'compare' => '=',
+            ),
+            array(
+                'key' => 'counselor_states',
+                'value' => $state,
+                'compare' => 'LIKE',
+            ),
+            array(
+                'key' => 'counselor_specialization',
+                'value' => $specialization,
+                'compare' => 'LIKE',
+            ),
+            // Add more meta_query clauses if needed
+        ),
+    );
+
+    $query = new WP_Query($args);
+
+    ob_start();
+
+    // Display Query Results
+    if ($query->have_posts()) {
+        while ($query->have_posts()) {
+            $query->the_post();
+            the_title();
+            the_field('counselor_slate_url');
+            the_field('counselor_image');
+            // Output more ACF fields if needed
+        }
+        wp_reset_postdata();
+    } else {
+        echo 'No counselors found.';
+        
+        // Debug output for args and other data
+        echo '<pre>';
+        echo 'Args: ';
+        print_r($args);
+        echo '</pre>';
+        
+        // You can add more debug output here if needed
+    }
+
+
+    return ob_get_clean();
+}
+
+// Shortcode for querying counselors
+function counselor_search_shortcode($atts) {
+    $form_data = fetch_counselor_form_data();
+    return perform_counselor_query($form_data['specialization'], $form_data['state'], $form_data['country']);
+}
+add_shortcode('counselor_search', 'counselor_search_shortcode');
+
+// Register API endpoint
+function register_custom_query_endpoint() {
+    register_rest_route('custom-query/v1', '/counselor-search', array(
+        'methods' => 'GET',
+        'callback' => 'get_counselor_search_shortcode_output',
+    ));
+}
+add_action('rest_api_init', 'register_custom_query_endpoint');
+
+// Callback function for API endpoint
+function get_counselor_search_shortcode_output($request) {
+    $form_data = fetch_counselor_form_data();
+    $output = perform_counselor_query($form_data['specialization'], $form_data['state'], $form_data['country']);
+    
+    return array(
+        'output' => $output,
+    );
+}
 
