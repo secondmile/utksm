@@ -22,12 +22,6 @@ function setupAjaxFormSubmission(formSelector, customQuerySelector, successMessa
                     form.style.opacity = 0;
                     setTimeout(() => {
                         form.style.display = 'none';
-                        // Trigger the custom query block if present
-                        const customQuery = document.querySelector(customQuerySelector);
-                        if (customQuery) {
-                            // Execute your custom query block logic here
-                            console.log('BIKI: Custom query block found'); // Debug log
-                        }
                         // Create and display the success message
                         const successDiv = document.createElement('div');
                         successDiv.innerHTML = successMessage;
@@ -36,6 +30,13 @@ function setupAjaxFormSubmission(formSelector, customQuerySelector, successMessa
                         form.parentNode.insertBefore(successDiv, form.nextSibling);
                         setTimeout(() => {
                             successDiv.style.opacity = 1;
+                            // Trigger the custom query block if present
+                            const customQuery = document.querySelector(customQuerySelector);
+                            if (customQuery) {
+                                // Execute your custom query block logic here
+                                console.log(`BIKI: Custom query block found: ${customQuery}`); // Debug log
+                                executeCustomQueryBlock(customQuery);
+                            }
                         }, 100);
                     }, 500);
                 } else {
@@ -44,6 +45,7 @@ function setupAjaxFormSubmission(formSelector, customQuerySelector, successMessa
                     alert('An error occurred. Please try again later.');
                 }
             };
+            
 
             xhr.onerror = function() {
                 console.error('BIKI: Request error:', xhr.statusText);
@@ -56,7 +58,21 @@ function setupAjaxFormSubmission(formSelector, customQuerySelector, successMessa
     });
 }
 
+function executeCustomQueryBlock(customQueryBlock) {
+    // Fetch the shortcode output from the API endpoint
+    fetch('/wp-json/custom-query/v1/counselor-search')
+        .then(response => response.json())
+        .then(data => {
+            const shortcodeOutput = data.output;
+            // Insert the shortcode output into the customQueryBlock
+            customQueryBlock.innerHTML = shortcodeOutput;
+        })
+        .catch(error => {
+            console.error('Error fetching shortcode output:', error);
+        });
+}
+
 // Usage: Call the function with appropriate selectors and success message
-setupAjaxFormSubmission('.smm-gform__counselor', '.your-custom-query-block-selector', '<p>Form submitted successfully!</p>');
+setupAjaxFormSubmission('.smm-gform__counselor', '.counselor-query-results', '<p>Form submitted successfully!</p>');
 // Add more calls for other forms as needed
 setupAjaxFormSubmission('.another-form-class', '.another-custom-query-block-selector', '<p>Form submitted successfully!</p>');
