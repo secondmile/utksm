@@ -94,14 +94,13 @@ function add_gform_script_to_page($content) {
 }
 
 
-// GFORM + Custom Loop Check
 function fetch_counselor_form_data() {
     $counselor_specialization = '';
     $counselor_state = '';
     $counselor_country = '';
 
     if (class_exists('RGFormsModel')) {
-        $form_id = 3;
+        $form_id = 3; // Replace with the actual form ID
         $entries = GFAPI::get_entries($form_id);
 
         foreach ($entries as $entry) {
@@ -119,9 +118,10 @@ function fetch_counselor_form_data() {
     );
 }
 
+// Perform counselor query using REST API endpoint
 function perform_counselor_query($specialization, $state, $country) {
-    // Custom Loop Query
-    $args = array(
+    // Build query parameters
+    $query_params = array(
         'post_type' => 'counselor',
         'meta_query' => array(
             'relation' => 'AND',
@@ -144,32 +144,31 @@ function perform_counselor_query($specialization, $state, $country) {
         ),
     );
 
-    $query = new WP_Query($args);
+    // Build REST API request URL
+    $api_url = '/wp-json/wp/v2/counselor?' . http_build_query($query_params);
+
+    // Fetch counselor posts using the REST API
+    $response = wp_remote_get($api_url);
+
+    if (is_wp_error($response)) {
+        echo 'Error fetching counselor data.';
+        return '';
+    }
+
+    $counselors = json_decode(wp_remote_retrieve_body($response), true);
 
     ob_start();
 
-    // Display Query Results
-    if ($query->have_posts()) {
-        while ($query->have_posts()) {
-            $query->the_post();
-            the_title();
-            the_field('counselor_slate_url');
-            the_field('counselor_image');
+    // Display counselor posts
+    if (!empty($counselors)) {
+        foreach ($counselors as $counselor) {
+            echo '<h2>' . esc_html($counselor['title']['rendered']) . '</h2>';
+            echo '<p>' . esc_html($counselor['content']['rendered']) . '</p>';
             // Output more ACF fields if needed
         }
-        wp_reset_postdata();
     } else {
         echo 'No counselors found.';
-        
-        // Debug output for args and other data
-        echo '<pre>';
-        echo 'Args: ';
-        print_r($args);
-        echo '</pre>';
-        
-        // You can add more debug output here if needed
     }
-
 
     return ob_get_clean();
 }
@@ -181,22 +180,40 @@ function counselor_search_shortcode($atts) {
 }
 add_shortcode('counselor_search', 'counselor_search_shortcode');
 
-// Register API endpoint
-function register_custom_query_endpoint() {
-    register_rest_route('custom-query/v1', '/counselor-search', array(
-        'methods' => 'GET',
-        'callback' => 'get_counselor_search_shortcode_output',
+add_action('rest_api_init', 'register_counselor_data_endpoint');
+
+add_action('rest_api_init', 'register_counselor_data_endpoint');
+
+function register_counselor_data_endpoint() {
+    register_rest_route('counselor-api/v1', '/data', array(
+        'methods' => 'POST',
+        'callback' => 'update_counselor_data',
+        'args' => array(
+            'specialization' => array(
+                'required' => true,
+            ),
+            'state' => array(
+                'required' => true,
+            ),
+            'country' => array(
+                'required' => true,
+            ),
+        ),
     ));
 }
-add_action('rest_api_init', 'register_custom_query_endpoint');
 
-// Callback function for API endpoint
-function get_counselor_search_shortcode_output($request) {
-    $form_data = fetch_counselor_form_data();
-    $output = perform_counselor_query($form_data['specialization'], $form_data['state'], $form_data['country']);
-    
-    return array(
-        'output' => $output,
+function update_counselor_data($request) {
+    $specialization = $request->get_param('specialization');
+    $state = $request->get_param('state');
+    $country = $request->get_param('country');
+
+    // Update the stored data with the new form submission
+    $stored_data = array(
+        'specialization' => $specialization,
+        'state' => $state,
+        'country' => $country,
     );
-}
 
+    // Return the updated stored data as JSON response
+    return rest_ensure_response($stored_data);
+}
