@@ -1,62 +1,57 @@
 console.log('BIKI: script loaded');
 
-function setupAjaxFormSubmission(formSelector, customQuerySelector, successMessage) {
-    const forms = document.querySelectorAll(formSelector);
+function setupAjaxFormSubmission(formSelector, displaySelector) {
+    const form = document.querySelector(formSelector);
+    const display = document.querySelector(displaySelector);
 
-    forms.forEach(form => {
-        form.addEventListener('submit', function(event) {
-            console.log('BIKI: Form submit event triggered'); // Debug log
-            event.preventDefault(); // Prevent the default form submission
+    // Attach event listeners to each form field
+    const specializationRadios = form.querySelectorAll('input[name="input_6"]');
+    const stateField = form.querySelector('#input_3_8');
+    const countryField = form.querySelector('#input_3_9');
 
-            // Perform the AJAX submission
-            console.log('BIKI: Initiating AJAX submission'); // Debug log
-            const formData = new FormData(form);
-            const xhr = new XMLHttpRequest();
-            xhr.open(form.method, form.action, true);
-
-            xhr.onload = function() {
-                console.log('BIKI: AJAX request completed'); // Debug log
-                if (xhr.status >= 200 && xhr.status < 400) {
-                    // Apply fade-out effect to form
-                    form.style.transition = 'opacity 0.5s';
-                    form.style.opacity = 0;
-                    setTimeout(() => {
-                        form.style.display = 'none';
-                        // Trigger the custom query block if present
-                        const customQuery = document.querySelector(customQuerySelector);
-                        if (customQuery) {
-                            // Execute your custom query block logic here
-                            console.log('BIKI: Custom query block found'); // Debug log
-                        }
-                        // Create and display the success message
-                        const successDiv = document.createElement('div');
-                        successDiv.innerHTML = successMessage;
-                        successDiv.style.opacity = 0;
-                        successDiv.style.transition = 'opacity 0.5s';
-                        form.parentNode.insertBefore(successDiv, form.nextSibling);
-                        setTimeout(() => {
-                            successDiv.style.opacity = 1;
-                        }, 100);
-                    }, 500);
-                } else {
-                    console.error('BIKI: Request error:', xhr.statusText);
-                    // Provide user feedback for error
-                    alert('An error occurred. Please try again later.');
-                }
-            };
-
-            xhr.onerror = function() {
-                console.error('BIKI: Request error:', xhr.statusText);
-                // Provide user feedback for error
-                alert('An error occurred. Please try again later.');
-            };
-
-            xhr.send(formData);
+    // Add event listeners to radio buttons within the specialization group
+    specializationRadios.forEach(radio => {
+        radio.addEventListener('click', () => {
+            clearFields(stateField, countryField);
+            captureAndDisplaySelections();
         });
     });
+
+    stateField.addEventListener('change', captureAndDisplaySelections);
+    countryField.addEventListener('change', captureAndDisplaySelections);
+
+    function captureAndDisplaySelections() {
+        // Capture the selected options from the form fields
+        const specialization = getSelectedRadioValue(specializationRadios);
+        const state = stateField.value;
+        const country = countryField.value;
+
+        // Build the display content
+        const displayContent = `Specialization: ${specialization}<br>State: ${state}<br>Country: ${country}`;
+
+        // Apply fade effect to display the content
+        fadeOutAndIn(display, displayContent);
+    }
+
+    function getSelectedRadioValue(radioButtons) {
+        const selectedRadio = Array.from(radioButtons).find(radio => radio.checked);
+        return selectedRadio ? selectedRadio.value : '';
+    }
+
+    function clearFields(...fields) {
+        fields.forEach(field => {
+            field.value = '';
+        });
+    }
+
+    function fadeOutAndIn(element, content) {
+        element.style.opacity = 0;
+        setTimeout(() => {
+            element.innerHTML = content;
+            element.style.opacity = 1;
+        }, 300);
+    }
 }
 
-// Usage: Call the function with appropriate selectors and success message
-setupAjaxFormSubmission('.smm-gform__counselor', '.your-custom-query-block-selector', '<p>Form submitted successfully!</p>');
-// Add more calls for other forms as needed
-setupAjaxFormSubmission('.another-form-class', '.another-custom-query-block-selector', '<p>Form submitted successfully!</p>');
+// Usage: Call the function with appropriate selectors
+setupAjaxFormSubmission('.smm-gform__counselor_wrapper', '.counselor-selection-display'); // Assuming the form has a class of "gform"
