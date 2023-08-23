@@ -22,7 +22,7 @@ function setupAjaxFormSubmission(formSelector, displaySelector) {
 
     function captureAndDisplaySelections() {
         // Capture the selected options from the form fields
-        const specialization = getSelectedRadioValue(specializationRadios);
+        const specialization = getSelectedRadioLabel(specializationRadios);
         const state = stateField.value;
         const country = countryField.value;
 
@@ -33,9 +33,9 @@ function setupAjaxFormSubmission(formSelector, displaySelector) {
         fadeOutAndIn(display, displayContent);
     }
 
-    function getSelectedRadioValue(radioButtons) {
+    function getSelectedRadioLabel(radioButtons) {
         const selectedRadio = Array.from(radioButtons).find(radio => radio.checked);
-        return selectedRadio ? selectedRadio.value : '';
+        return selectedRadio ? selectedRadio.parentElement.querySelector('label').textContent : '';
     }
 
     function clearFields(...fields) {
