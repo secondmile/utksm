@@ -1,5 +1,7 @@
 console.log('BIKI: script loaded');
 
+const selectedFilters = [];
+
 function setupAjaxFormSubmission(formSelector, displaySelector) {
     const form = document.querySelector(formSelector);
     const display = document.querySelector(displaySelector);
@@ -22,15 +24,34 @@ function setupAjaxFormSubmission(formSelector, displaySelector) {
 
     function captureAndDisplaySelections() {
         // Capture the selected options from the form fields
-        const specialization = getSelectedRadioLabel(specializationRadios);
-        const state = stateField.value;
-        const country = countryField.value;
+        const selectedSpecialization = getSelectedRadioLabel(specializationRadios);
+        const selectedState = getSelectedOptionLabel(stateField);
+        const selectedCountry = getSelectedOptionLabel(countryField);
+    
+        // Update the array with selected items
+        selectedFilters.length = 0; // Clear the array
+        if (selectedSpecialization) selectedFilters.push(selectedSpecialization);
+        if (selectedState) selectedFilters.push(selectedState);
+        if (selectedCountry) selectedFilters.push(selectedCountry);
 
         // Build the display content
-        const displayContent = `Specialization: ${specialization}<br>State: ${state}<br>Country: ${country}`;
-
+        const displayContent = `Specialization: ${selectedSpecialization}<br>State: ${selectedState}<br>Country: ${selectedCountry}`;
+    
         // Apply fade effect to display the content
         fadeOutAndIn(display, displayContent);
+
+        // console.log(selectedFilters);
+    }
+    
+    function getSelectedOptionLabel(selectField) {
+        const selectedOption = selectField.querySelector(`option[value="${selectField.value}"]`);
+        const selectedLabel = selectedOption ? selectedOption.textContent : '';
+        
+        if (selectedLabel && !selectedLabel.toLowerCase().startsWith('— select a')) {
+            return selectedLabel;
+        }
+        
+        return '';
     }
 
     function getSelectedRadioLabel(radioButtons) {
