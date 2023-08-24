@@ -131,13 +131,57 @@ function updateQueryLoopBlockContentWithAjax(apiURL) {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', apiURL, true);
     xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            // Update the target element with the received content
-            document.querySelector('.sm--counselor-query-block').innerHTML = xhr.responseText;
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                // Process JSON data and generate HTML markup
+                const jsonData = JSON.parse(xhr.responseText);
+                const markup = generateMarkupFromJSON(jsonData);
+                
+                // Update the target element with the generated content
+                document.querySelector('.sm--counselor-query-block').innerHTML = markup;
+
+                // Re-render the looop!
+            } else {
+                console.log('BIKI XHR ERROR:', xhr.status, xhr.statusText);
+            }
         }
     };
+    
     xhr.send();
 }
+
+function generateMarkupFromJSON(data) {
+    // Process the JSON data and generate HTML markup
+    let markup = '';
+
+    // Loop through the data and generate markup
+    data.forEach(item => {
+        const acfData = item.acf;
+
+        // Generate markup for non-empty ACF fields
+        const acfMarkup = Object.keys(acfData).map(fieldName => {
+            const fieldValue = acfData[fieldName];
+
+            if (fieldValue) {
+                return `<div class="acf-field">
+                    <strong>${fieldName}:</strong> ${fieldValue}
+                </div>`;
+            }
+
+            return ''; // Return empty string for empty fields
+        }).join('');
+
+        if (acfMarkup.trim() !== '') {
+            // Render the entire counselor item if there's non-empty ACF markup
+            markup += `<div class="counselor-item">
+                <pre>${acfMarkup}</pre>
+            </div>`;
+        }
+    });
+
+    return markup;
+}
+
 
 // Function to update Query Loop block content
 function updateQueryLoopBlockContent(filters) {
