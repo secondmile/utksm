@@ -1,4 +1,4 @@
-// console.log('BIKI: script loaded');
+// console.log('BIKI: Counselor script loaded');
 
 const selectedFilters = [];
 
@@ -153,35 +153,71 @@ function updateQueryLoopBlockContentWithAjax(apiURL) {
 function generateMarkupFromJSON(data) {
     // Process the JSON data and generate HTML markup
     let markup = '';
-
+    
     // Loop through the data and generate markup
     data.forEach(item => {
+        const title = item.title.rendered;
+        // console.log(title);
         const acfData = item.acf;
 
-        // Generate markup for non-empty ACF fields
-        const acfMarkup = Object.keys(acfData).map(fieldName => {
-            const fieldValue = acfData[fieldName];
+        const combinedData = { title, ...acfData };
+        console.log(combinedData);
 
-            if (fieldValue) {
-                return `<div class="acf-field">
-                    <strong>${fieldName}:</strong> ${fieldValue}
-                </div>`;
-            }
+        // Generate markup for ACF fields
+        const acfMarkup = generateACFMarkup(combinedData);
 
-            return ''; // Return empty string for empty fields
-        }).join('');
-
-        if (acfMarkup.trim() !== '') {
+        if (acfMarkup !== '') {
             // Render the entire counselor item if there's non-empty ACF markup
-            markup += `<div class="counselor-item">
-                <pre>${acfMarkup}</pre>
-            </div>`;
+            markup += `<div class="counselor-item">${acfMarkup}</div>`;
         }
     });
 
+    console.log(markup);
     return markup;
 }
 
+function generateACFMarkup(combinedData) {
+    const fieldRenderers = {
+        'title': fieldValue => `<h3>${fieldValue}</h3>`,
+        'counselor_title': fieldValue => `<div><strong>counselor_title:</strong> ${fieldValue}</div>`,
+        'counselor_slate_url': fieldValue => `<div class="acf-field"><strong>counselor_slate_url:</strong> <a href="${fieldValue}" target="_blank">${fieldValue}</a></div>`,
+        'counselor_image': fieldValue => generateImageMarkup(fieldValue),
+        'counselor_country': fieldValue => generateTaxonomyMarkup('Country', fieldValue),
+        'counselor_states': fieldValue => generateTaxonomyMarkup('States', fieldValue),
+        'counselor_county': fieldValue => `<div class="acf-field"><strong>counselor_county:</strong> ${fieldValue}</div>`,
+        'counselor_schools': fieldValue => `<div class="acf-field"><strong>counselor_schools:</strong> ${fieldValue}</div>`,
+        'counselor_specialization': fieldValue => `<div class="acf-field"><strong>counselor_specialization:</strong> ${fieldValue}</div>`,
+    };
+
+    const acfMarkup = Object.keys(combinedData).map(fieldName => {
+        const fieldValue = combinedData[fieldName];
+        const fieldRenderer = fieldRenderers[fieldName];
+
+        if (fieldValue !== null && fieldRenderer) {
+            return fieldRenderer(fieldValue);
+        }
+
+        return ''; // Return empty string for empty fields
+    }).join('');
+
+    return acfMarkup;
+}
+
+
+
+async function generateImageMarkup(imageID) {
+    // const imageURL = await getImageURLByID(imageID);
+    // return `<div class="acf-field"><strong>counselor_image:</strong> <img src="${imageURL}" alt="Image" /></div>`;
+}
+
+async function generateTaxonomyMarkup(taxonomyName, fieldValue) {
+    const taxonomyIDs = Array.isArray(fieldValue) ? fieldValue : [fieldValue];
+    const taxonomyValues = await Promise.all(taxonomyIDs.map(id => {
+        // return getTaxonomyNameByID(id);
+        return 'BIKI please make a function to get the taxonomy name by ID tyty';
+    }));
+    return `<div class="acf-field"><strong>${taxonomyName}:</strong> ${taxonomyValues.join(', ')}</div>`;
+}
 
 // Function to update Query Loop block content
 function updateQueryLoopBlockContent(filters) {
