@@ -43,7 +43,7 @@ function setupAjaxFormSubmission(formSelector, displaySelector) {
         // Fetch and update the Query Loop block content
         updateQueryLoopBlockContent(selectedFilters);
     
-        console.log(selectedFilters);
+        // console.log(selectedFilters);
     }
     
     function getSelectedOption(selectField) {
@@ -140,16 +140,37 @@ function updateQueryLoopBlockContent(filters) {
     console.log('API URL:', apiUrl);
 
     fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-            // Update the Query Loop block's content
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('API request failed');
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Debugging: Output the data received from the API
+        console.log('API Data:', data);
+
+        // Dispatch the data if it's available and properly structured
+        if (data) {
             wp.data.dispatch('core/block-editor').updateBlockAttributes(queryLoopBlockId, {
-                content: data.content,
+                // counselor_title: data.counselor-title,
+                // counselor_slate_url: data.counselor_slate_url,
+                // counselor_image: data.counselor_image,
+                // counselor_country: data.counselor_country,
+                // counselor_states: data.counselor_states,
+                // counselor_county: data.counselor_county,
+                // counselor_schools: data.counselor_schools,
+                counselor_specialization: data.counselor-specialization,
             });
-        })
-        .catch(error => {
-            console.error('Error fetching updated content:', error);
-        });
+        } else {
+            console.error('API response does not have expected structure.');
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+    });
+
+
 }
 
 
