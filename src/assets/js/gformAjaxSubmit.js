@@ -1,5 +1,20 @@
 // console.log('BIKI: Counselor script loaded');
 
+
+function testAcfJs() {
+    if (typeof acf !== 'undefined') {
+        console.log('ACF JavaScript API is available.');
+        // Now you can use acf functions here
+    } else {
+        console.log('ACF JavaScript API is not available.');
+    }
+}
+
+// Call the testAcfJs function
+testAcfJs();
+
+
+
 const selectedFilters = [];
 
 function setupAjaxFormSubmission(formSelector, displaySelector) {
@@ -136,11 +151,14 @@ function updateQueryLoopBlockContentWithAjax(apiURL) {
                 // Process JSON data and generate HTML markup
                 const jsonData = JSON.parse(xhr.responseText);
                 const markup = generateMarkupFromJSON(jsonData);
+
+                // Block Wrapper Classes (not items)
+                const blockLayoutClasses = 'columns-3 wp-block-post-template has-base-font-size is-layout-grid wp-container-29 wp-block-post-template-is-layout-grid';
                 
                 // Update the target element with the generated content
-                document.querySelector('.sm--counselor-query-block').innerHTML = markup;
-
-                // Re-render the looop!
+                document.querySelector('.sm--counselor-query-block').innerHTML = `
+                    <ul class="${blockLayoutClasses}">${markup}</ul>
+                `;
             } else {
                 console.log('BIKI XHR ERROR:', xhr.status, xhr.statusText);
             }
@@ -157,36 +175,39 @@ function generateMarkupFromJSON(data) {
     // Loop through the data and generate markup
     data.forEach(item => {
         const title = item.title.rendered;
-        // console.log(title);
         const acfData = item.acf;
+        const acfTermEndpoint = item._links[`wp:term`][0].href;
+        console.log('BIKI: Term Endpoint | ', acfTermEndpoint);
+
 
         const combinedData = { title, ...acfData };
         console.log(combinedData);
 
         // Generate markup for ACF fields
         const acfMarkup = generateACFMarkup(combinedData);
+        const blockQueryClasses = 'wp-block-query is-layout-flow wp-block-query-is-layout-flow';
 
         if (acfMarkup !== '') {
             // Render the entire counselor item if there's non-empty ACF markup
-            markup += `<div class="counselor-item">${acfMarkup}</div>`;
+            markup += `<div class="${blockQueryClasses} counselor-loop__counselor-block">${acfMarkup}</div>`;
         }
     });
 
-    console.log(markup);
+    // console.log(markup);
     return markup;
 }
 
 function generateACFMarkup(combinedData) {
     const fieldRenderers = {
-        'title': fieldValue => `<h3>${fieldValue}</h3>`,
-        'counselor_title': fieldValue => `<div><strong>counselor_title:</strong> ${fieldValue}</div>`,
-        'counselor_slate_url': fieldValue => `<div class="acf-field"><strong>counselor_slate_url:</strong> <a href="${fieldValue}" target="_blank">${fieldValue}</a></div>`,
-        'counselor_image': fieldValue => generateImageMarkup(fieldValue),
-        'counselor_country': fieldValue => generateTaxonomyMarkup('Country', fieldValue),
-        'counselor_states': fieldValue => generateTaxonomyMarkup('States', fieldValue),
-        'counselor_county': fieldValue => `<div class="acf-field"><strong>counselor_county:</strong> ${fieldValue}</div>`,
-        'counselor_schools': fieldValue => `<div class="acf-field"><strong>counselor_schools:</strong> ${fieldValue}</div>`,
-        'counselor_specialization': fieldValue => `<div class="acf-field"><strong>counselor_specialization:</strong> ${fieldValue}</div>`,
+        'counselor_image_url': fieldValue => `<div class="counselor-loop__image"><img src="${fieldValue}" alt="Counselor Image" /></div>`,
+        'title': fieldValue => `<div class="counselor-loop__name"><h3>${fieldValue}</h3></div>`,
+        'counselor_title': fieldValue => `<div class="counselor-loop__title"><strong>counselor_title:</strong> ${fieldValue}</div>`,
+        'counselor_slate_url': fieldValue => `<div class="counselor-loop__url"><strong>counselor_slate_url:</strong> <a href="${fieldValue}" target="_blank">${fieldValue}</a></div>`,
+        // 'counselor_country': fieldValue => generateTaxonomyMarkup('counselor-states', fieldValue), 
+        // 'counselor_states': fieldValue => generateTaxonomyMarkup('counselor-states', fieldValue),
+        'counselor_county': fieldValue => `<div class="counselor-loop__county"><strong>counselor_county:</strong> ${fieldValue}</div>`,
+        'counselor_schools': fieldValue => `<div class="counselor-loop__schools"><strong>counselor_schools:</strong> ${fieldValue}</div>`,
+        // 'counselor_specialization': fieldValue => generateTaxonomyMarkup('counselor-specialization', fieldValue),
     };
 
     const acfMarkup = Object.keys(combinedData).map(fieldName => {
@@ -200,24 +221,63 @@ function generateACFMarkup(combinedData) {
         return ''; // Return empty string for empty fields
     }).join('');
 
-    return acfMarkup;
+    const blockPostClasses = 'wp-block-post post-1473 page type-page status-publish has-post-thumbnail hentry';
+    const blockPostInnerClasses = 'wp-block-group has-white-background-color has-background has-global-padding is-layout-constrained wp-container-22 wp-block-group-is-layout-constrained';
+    return `
+        <li class="${blockPostClasses}">
+        <div class="${blockPostInnerClasses}">
+        ${acfMarkup}
+        </div>
+        </li>
+    `;
 }
 
 
+// function generateTaxonomyMarkup() {
+//     console.log('test');
+// }
+
 
 async function generateImageMarkup(imageID) {
+    return `<div class="counselor-loop__image">Image</div>`;
     // const imageURL = await getImageURLByID(imageID);
     // return `<div class="acf-field"><strong>counselor_image:</strong> <img src="${imageURL}" alt="Image" /></div>`;
 }
 
-async function generateTaxonomyMarkup(taxonomyName, fieldValue) {
-    const taxonomyIDs = Array.isArray(fieldValue) ? fieldValue : [fieldValue];
-    const taxonomyValues = await Promise.all(taxonomyIDs.map(id => {
-        // return getTaxonomyNameByID(id);
-        return 'BIKI please make a function to get the taxonomy name by ID tyty';
-    }));
-    return `<div class="acf-field"><strong>${taxonomyName}:</strong> ${taxonomyValues.join(', ')}</div>`;
-}
+// // Function to get taxonomy name by ID
+// async function getTaxonomyNameByID(taxonomyEndpoint, id) {
+//     const response = await fetch(`/wp-json/wp/v2/${taxonomyEndpoint}/${id}`);
+//     const taxonomyData = await response.json();
+//     // console.log('BIKI tax name: ', taxonomyData.name); // √
+//     return taxonomyData.name;
+// }
+
+// async function generateTaxonomyMarkup(taxonomyEndpoint, fieldValue) {
+//     console.log('Tax Field Value: ', fieldValue);
+//     console.log('Tax Endpoint: ', taxonomyEndpoint);
+
+//     const taxonomyIDs = Array.isArray(fieldValue) ? fieldValue : [fieldValue];
+//     const taxonomyNames = []; // Initialize an empty array
+
+//     const taxonomyPromises = taxonomyIDs.map(id => {
+//         return getTaxonomyNameByID(taxonomyEndpoint, id).then(taxonomyName => {
+//             console.log('Taxonomy Name:', taxonomyName);
+//             taxonomyNames.push(taxonomyName); // Add taxonomyName to the array
+//         });
+//     });
+
+//     await Promise.all(taxonomyPromises);
+
+//     // Generate markup for each taxonomy name
+//     const taxonomyMarkup = taxonomyNames.map(name => {
+//         return `<span class="taxonomy-name">${name}</span>`;
+//     }).join(', '); // Join the markup with commas
+
+//     console.log('Taxonomy Markup: ', taxonomyMarkup);
+//     return `<div class="counselor-loop__taxonomy-group"><strong>BIKI ${taxonomyEndpoint}:</strong> ${taxonomyMarkup}</div>`;
+// }
+
+
 
 // Function to update Query Loop block content
 function updateQueryLoopBlockContent(filters) {
