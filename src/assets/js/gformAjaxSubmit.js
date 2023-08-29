@@ -1,20 +1,3 @@
-// console.log('BIKI: Counselor script loaded');
-
-
-function testAcfJs() {
-    if (typeof acf !== 'undefined') {
-        console.log('ACF JavaScript API is available.');
-        // Now you can use acf functions here
-    } else {
-        console.log('ACF JavaScript API is not available.');
-    }
-}
-
-// Call the testAcfJs function
-testAcfJs();
-
-
-
 const selectedFilters = [];
 
 function setupAjaxFormSubmission(formSelector, displaySelector) {
@@ -44,25 +27,14 @@ function setupAjaxFormSubmission(formSelector, displaySelector) {
         const selectedState = getSelectedOption(stateField);
         const selectedCountry = getSelectedOption(countryField);
     
-        // Update the array with selected items
+        // Update the array
         selectedFilters.length = 0; // Clear the array
         if (selectedSpecialization) selectedFilters.push(selectedSpecialization);
         if (selectedState) selectedFilters.push(selectedState);
         if (selectedCountry) selectedFilters.push(selectedCountry);
     
-        // Build the display content (DEBUG/TESTING, delete later)
-        // const displayContent = `Specialization: ${selectedSpecialization ? selectedSpecialization.label : ''}<br>State: ${selectedState ? selectedState.label : ''}<br>Country: ${selectedCountry ? selectedCountry.label : ''}`;
-    
-        // Fetch the updated content for Query Loop block
+        // Fetch the updated content
         updateQueryLoopBlockContent(selectedFilters);
-
-        // Apply fade effect to display the content
-        // fadeOutAndIn(display, updatedQueryLoopContent);
-    
-        // Fetch and update the Query Loop block content
-        // updateQueryLoopBlockContent(selectedFilters);
-    
-        // console.log(selectedFilters);
     }
     
     // Dropdown Selection handling
@@ -70,7 +42,6 @@ function setupAjaxFormSubmission(formSelector, displaySelector) {
         const selectedOption = selectField.querySelector(`option[value="${selectField.value}"]`);
         const selectedLabel = selectedOption ? selectedOption.textContent : '';
     
-        // console.log('Selected Label:', selectedLabel);
     
         if (selectedLabel && !selectedLabel.toLowerCase().startsWith('— select a')) {
             const parentFieldId = getParentFieldId(selectField);
@@ -117,7 +88,6 @@ function setupAjaxFormSubmission(formSelector, displaySelector) {
     
         if (labelClass) {
             const extractedKey = labelClass.replace('sm-data__', '').toLowerCase().split(' ').join('-');
-            // console.log('Extracted Label from Class:', extractedKey);
             return extractedKey;
         }
     
@@ -130,17 +100,8 @@ function setupAjaxFormSubmission(formSelector, displaySelector) {
             field.value = '';
         });
     }
-
-    function fadeOutAndIn(element, content) {
-        element.style.opacity = 0;
-        setTimeout(() => {
-            element.innerHTML = content;
-            element.style.opacity = 1;
-        }, 300);
-    }
 }
 
-// Function to update Query Loop block content using AJAX
 function updateQueryLoopBlockContentWithAjax(apiURL) {
     // Make an AJAX request to the server
     var xhr = new XMLHttpRequest();
@@ -152,15 +113,23 @@ function updateQueryLoopBlockContentWithAjax(apiURL) {
                 const jsonData = JSON.parse(xhr.responseText);
                 const markup = generateMarkupFromJSON(jsonData);
 
+                // Get the resultsSelector element
+                const resultsSelector = document.querySelector('.sm--counselor-query-block');
+
                 // Block Wrapper Classes (not items)
-                const blockLayoutClasses = 'columns-3 wp-block-post-template has-base-font-size is-layout-grid wp-container-29 wp-block-post-template-is-layout-grid';
-                
-                // Update the target element with the generated content
-                document.querySelector('.sm--counselor-query-block').innerHTML = `
-                    <ul class="${blockLayoutClasses}">${markup}</ul>
-                `;
+                const blockLayoutClasses = 'columns-3 wp-block-post-template has-base-font-size is-layout-grid wp-block-post-template-is-layout-grid wp-container-29';
+
+                if (resultsSelector) {
+                    // Update the target element with the generated content
+                    resultsSelector.innerHTML = `
+                        <ul class="${blockLayoutClasses}">${markup}</ul>
+                    `;
+                } else {
+                    // Display an error message if resultsSelector doesn't exist
+                    console.error("Results cannot be displayed without the resultsSelector existing on the page");
+                }
             } else {
-                console.log('BIKI XHR ERROR:', xhr.status, xhr.statusText);
+                console.log('XHR ERROR:', xhr.status, xhr.statusText);
             }
         }
     };
@@ -177,11 +146,9 @@ function generateMarkupFromJSON(data) {
         const title = item.title.rendered;
         const acfData = item.acf;
         const acfTermEndpoint = item._links[`wp:term`][0].href;
-        console.log('BIKI: Term Endpoint | ', acfTermEndpoint);
 
 
         const combinedData = { title, ...acfData };
-        console.log(combinedData);
 
         // Generate markup for ACF fields
         const acfMarkup = generateACFMarkup(combinedData);
@@ -193,13 +160,13 @@ function generateMarkupFromJSON(data) {
         }
     });
 
-    // console.log(markup);
     return markup;
 }
 
 function generateACFMarkup(combinedData) {
     const counselorSlateUrl = combinedData.counselor_slate_url;
 
+    // Defines the field data + markup, but not the order in which they are presented (see fieldOrder)
     const fieldRenderers = {
         'counselor_image_url': fieldValue => `<div class="counselor-loop__image"><figure class="wp-block-post-featured-image"><img src="${fieldValue}" class="attachment-post-thumbnail size-post-thumbnail not-transparent wp-post-image" alt="Counselor Image" /></figure></div>`,
         'title': fieldValue => `<div class="counselor-loop__name"><h3>${fieldValue}</h3></div>`,
@@ -219,7 +186,7 @@ function generateACFMarkup(combinedData) {
         // 'counselor_specialization': fieldValue => generateTaxonomyMarkup('counselor-specialization', fieldValue),
     };
 
-    // Define the desired order of fields
+    // Define the desired order of fields as they display on the page
     const fieldOrder = [
         'counselor_image_url',
         'title',
@@ -248,52 +215,11 @@ function generateACFMarkup(combinedData) {
     `;
 }
 
-
-// function generateTaxonomyMarkup() {
-//     console.log('test');
+// async function generateImageMarkup(imageID) {
+//     return `<div class="counselor-loop__image">Image</div>`;
+//     // const imageURL = await getImageURLByID(imageID);
+//     // return `<div class="acf-field"><strong>counselor_image:</strong> <img src="${imageURL}" alt="Image" /></div>`;
 // }
-
-
-async function generateImageMarkup(imageID) {
-    return `<div class="counselor-loop__image">Image</div>`;
-    // const imageURL = await getImageURLByID(imageID);
-    // return `<div class="acf-field"><strong>counselor_image:</strong> <img src="${imageURL}" alt="Image" /></div>`;
-}
-
-// // Function to get taxonomy name by ID
-// async function getTaxonomyNameByID(taxonomyEndpoint, id) {
-//     const response = await fetch(`/wp-json/wp/v2/${taxonomyEndpoint}/${id}`);
-//     const taxonomyData = await response.json();
-//     // console.log('BIKI tax name: ', taxonomyData.name); // √
-//     return taxonomyData.name;
-// }
-
-// async function generateTaxonomyMarkup(taxonomyEndpoint, fieldValue) {
-//     console.log('Tax Field Value: ', fieldValue);
-//     console.log('Tax Endpoint: ', taxonomyEndpoint);
-
-//     const taxonomyIDs = Array.isArray(fieldValue) ? fieldValue : [fieldValue];
-//     const taxonomyNames = []; // Initialize an empty array
-
-//     const taxonomyPromises = taxonomyIDs.map(id => {
-//         return getTaxonomyNameByID(taxonomyEndpoint, id).then(taxonomyName => {
-//             console.log('Taxonomy Name:', taxonomyName);
-//             taxonomyNames.push(taxonomyName); // Add taxonomyName to the array
-//         });
-//     });
-
-//     await Promise.all(taxonomyPromises);
-
-//     // Generate markup for each taxonomy name
-//     const taxonomyMarkup = taxonomyNames.map(name => {
-//         return `<span class="taxonomy-name">${name}</span>`;
-//     }).join(', '); // Join the markup with commas
-
-//     console.log('Taxonomy Markup: ', taxonomyMarkup);
-//     return `<div class="counselor-loop__taxonomy-group"><strong>BIKI ${taxonomyEndpoint}:</strong> ${taxonomyMarkup}</div>`;
-// }
-
-
 
 // Function to update Query Loop block content
 function updateQueryLoopBlockContent(filters) {
@@ -314,7 +240,6 @@ function updateQueryLoopBlockContent(filters) {
         }
     });
 
-    console.log('API URL:', apiUrl);
 
     // Call the AJAX function with the constructed API URL
     updateQueryLoopBlockContentWithAjax(apiUrl);
