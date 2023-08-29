@@ -117,7 +117,7 @@ function updateQueryLoopBlockContentWithAjax(apiURL) {
                 const resultsSelector = document.querySelector('.sm--counselor-query-block');
 
                 // Block Wrapper Classes (not items)
-                const blockLayoutClasses = 'columns-3 wp-block-post-template has-base-font-size is-layout-grid wp-block-post-template-is-layout-grid wp-container-29';
+                const blockLayoutClasses = 'columns-3 wp-block-post-template has-base-font-size is-layout-grid wp-container-24 wp-block-post-template-is-layout-grid';
 
                 if (resultsSelector) {
                     // Update the target element with the generated content
@@ -204,8 +204,8 @@ function generateACFMarkup(combinedData) {
         return ''; // Return empty string for empty fields
     }).join('');
 
-    const blockPostClasses = 'wp-block-post page type-page status-publish has-post-thumbnail hentry';
-    const blockPostInnerClasses = 'wp-block-group has-white-background-color has-background has-global-padding is-layout-constrained wp-block-group-is-layout-constrained has-text-align-center';
+    const blockPostClasses = 'wp-block-post post-1893 page type-page status-publish hentry';
+    const blockPostInnerClasses = 'wp-block-group has-white-background-color has-background has-global-padding is-layout-constrained wp-container-16 wp-block-group-is-layout-constrained has-text-align-center';
     return `
         <li class="${blockPostClasses}">
         <div class="${blockPostInnerClasses}">
