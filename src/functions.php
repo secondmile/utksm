@@ -86,78 +86,39 @@ function enqueue_scripts() {
 }
 add_action('wp_enqueue_scripts', 'enqueue_scripts');
 
-// Shortcode for displaying filtered results
-function counselor_search_shortcode($atts) {
-    $specialization = isset($_POST['specialization']) ? sanitize_text_field($_POST['specialization']) : '';
-    $localization = isset($_POST['localization']) ? sanitize_text_field($_POST['localization']) : '';
+// // Shortcode for displaying filtered results
+// function counselor_search_shortcode($atts) {
+//     $specialization = isset($_POST['specialization']) ? sanitize_text_field($_POST['specialization']) : '';
+//     $localization = isset($_POST['localization']) ? sanitize_text_field($_POST['localization']) : '';
 
-    // Construct API query URL with parameters
-    $api_query_url = rest_url('/wp/v2/counselor');
-    if ($specialization) {
-        $api_query_url .= '?specialization=' . urlencode($specialization);
-    }
-    if ($localization) {
-        $api_query_url .= ($specialization ? '&' : '?') . 'localization=' . urlencode($localization);
-    }
+//     // Construct API query URL with parameters
+//     $api_query_url = rest_url('/wp/v2/counselor');
+//     if ($specialization) {
+//         $api_query_url .= '?specialization=' . urlencode($specialization);
+//     }
+//     if ($localization) {
+//         $api_query_url .= ($specialization ? '&' : '?') . 'localization=' . urlencode($localization);
+//     }
 
-    // Fetch data from the API
-    $response = wp_remote_get($api_query_url);
-    $counselors = json_decode(wp_remote_retrieve_body($response), true);
+//     // Fetch data from the API
+//     $response = wp_remote_get($api_query_url);
+//     $counselors = json_decode(wp_remote_retrieve_body($response), true);
 
-    // Build and return HTML output
-    $output = '';
-    if (!empty($counselors)) {
-        foreach ($counselors as $counselor) {
-            $output .= '<h2>' . esc_html($counselor['title']['rendered']) . '</h2>';
-            // Output other counselor details
-        }
-    } else {
-        $output = 'No counselors found.';
-    }
-    return $output;
-}
-add_shortcode('counselor_search', 'counselor_search_shortcode');
-
-// // Gravity Forms API
-// // Create a function to fetch data from the Gravity Forms API
-// function fetch_gravity_forms_data() {
-//     $api_url = '/wp-json/gf/v2/';
-
-//     // Set your API keys
-//     $api_key = 'ck_6da642d395a2a5540ace7ea195ffb2210f7f680d';
-//     $api_secret = 'cs_cb1f24db0dac082788233f7cf20b3c7cc4a78720';
-
-//     // Create headers for authentication
-//     $headers = array(
-//         'Authorization' => 'Basic ' . base64_encode($api_key . ':' . $api_secret),
-//     );
-
-//     // Perform the API request
-//     $response = wp_remote_get($api_url . 'entries', array('headers' => $headers));
-
-//     // Check for a successful response
-//     if (is_array($response) && !is_wp_error($response)) {
-//         $body = wp_remote_retrieve_body($response);
-//         $data = json_decode($body, true);
-//         return $data;
+//     // Build and return HTML output
+//     $output = '';
+//     if (!empty($counselors)) {
+//         foreach ($counselors as $counselor) {
+//             $output .= '<h2>' . esc_html($counselor['title']['rendered']) . '</h2>';
+//             // Output other counselor details
+//         }
 //     } else {
-//         return false;
+//         $output = 'No counselors found.';
 //     }
+//     return $output;
 // }
+// add_shortcode('counselor_search', 'counselor_search_shortcode');
 
-// // Localize the fetched data for JavaScript
-// function localize_gravity_forms_data() {
-//     $data = fetch_gravity_forms_data();
-
-//     if ($data) {
-//         wp_localize_script('g', 'gf_data', $data);
-//     }
-// }
-// add_action('wp_enqueue_scripts', 'localize_gravity_forms_data');
-
-
-
-// Modify your custom API data for counselor post type
+// Add custom API data for counselor post type (images, objects, taxonomies)
 // BIKI -- ref this for taxonomy later
 function modify_counselor_api_data($data, $post, $request) {
     if ($post->post_type === 'counselor') {
@@ -181,3 +142,6 @@ add_action('init', function() {
     add_filter('rest_prepare_counselor', 'modify_counselor_api_data', 10, 3);
 });
 
+
+// Removes Gravity Form Submit Button
+add_filter( 'gform_submit_button_3', '__return_empty_string' );

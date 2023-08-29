@@ -198,19 +198,35 @@ function generateMarkupFromJSON(data) {
 }
 
 function generateACFMarkup(combinedData) {
+    const counselorSlateUrl = combinedData.counselor_slate_url;
+
     const fieldRenderers = {
-        'counselor_image_url': fieldValue => `<div class="counselor-loop__image"><img src="${fieldValue}" alt="Counselor Image" /></div>`,
+        'counselor_image_url': fieldValue => `<div class="counselor-loop__image"><figure class="wp-block-post-featured-image"><img src="${fieldValue}" class="attachment-post-thumbnail size-post-thumbnail not-transparent wp-post-image" alt="Counselor Image" /></figure></div>`,
         'title': fieldValue => `<div class="counselor-loop__name"><h3>${fieldValue}</h3></div>`,
-        'counselor_title': fieldValue => `<div class="counselor-loop__title"><strong>counselor_title:</strong> ${fieldValue}</div>`,
-        'counselor_slate_url': fieldValue => `<div class="counselor-loop__url"><strong>counselor_slate_url:</strong> <a href="${fieldValue}" target="_blank">${fieldValue}</a></div>`,
+        // 'counselor_slate_url': fieldValue => '',
+        'counselor_slate_url': fieldValue => `${fieldValue}`,
+        'counselor_title': (fieldValue, combinedData) => {
+            return `<div class="counselor-loop__title"><a href="${counselorSlateUrl}" target="_blank">${fieldValue}</a></div>`;
+        },
+        
+        // These work but exceed scope of current design
+        // 'counselor_county': fieldValue => `<div class="counselor-loop__county"><strong>counselor_county:</strong> ${fieldValue}</div>`,
+        // 'counselor_schools': fieldValue => `<div class="counselor-loop__schools"><strong>counselor_schools:</strong> ${fieldValue}</div>`,
+        
+        // Commenting these out until taxonomy has been injected into the json object (like image); exceeds scope of current design
         // 'counselor_country': fieldValue => generateTaxonomyMarkup('counselor-states', fieldValue), 
         // 'counselor_states': fieldValue => generateTaxonomyMarkup('counselor-states', fieldValue),
-        'counselor_county': fieldValue => `<div class="counselor-loop__county"><strong>counselor_county:</strong> ${fieldValue}</div>`,
-        'counselor_schools': fieldValue => `<div class="counselor-loop__schools"><strong>counselor_schools:</strong> ${fieldValue}</div>`,
         // 'counselor_specialization': fieldValue => generateTaxonomyMarkup('counselor-specialization', fieldValue),
     };
 
-    const acfMarkup = Object.keys(combinedData).map(fieldName => {
+    // Define the desired order of fields
+    const fieldOrder = [
+        'counselor_image_url',
+        'title',
+        'counselor_title'
+    ];
+
+    const acfMarkup = fieldOrder.map(fieldName => {
         const fieldValue = combinedData[fieldName];
         const fieldRenderer = fieldRenderers[fieldName];
 
@@ -221,8 +237,8 @@ function generateACFMarkup(combinedData) {
         return ''; // Return empty string for empty fields
     }).join('');
 
-    const blockPostClasses = 'wp-block-post post-1473 page type-page status-publish has-post-thumbnail hentry';
-    const blockPostInnerClasses = 'wp-block-group has-white-background-color has-background has-global-padding is-layout-constrained wp-container-22 wp-block-group-is-layout-constrained';
+    const blockPostClasses = 'wp-block-post page type-page status-publish has-post-thumbnail hentry';
+    const blockPostInnerClasses = 'wp-block-group has-white-background-color has-background has-global-padding is-layout-constrained wp-block-group-is-layout-constrained has-text-align-center';
     return `
         <li class="${blockPostClasses}">
         <div class="${blockPostInnerClasses}">
