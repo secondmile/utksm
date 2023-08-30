@@ -1,0 +1,52 @@
+.sm--counselor-query-block {
+    .counselor-loop {
+        &__counselor-block {
+            .wp-block-group {
+                padding-top:var(--wp--preset--spacing--x-small);
+                padding-right:var(--wp--preset--spacing--x-small);
+                padding-bottom:var(--wp--preset--spacing--x-small);
+                padding-left:var(--wp--preset--spacing--x-small)
+            }
+
+            &:hover {
+                img {
+                    transform: scale(1.05);
+                }
+            }
+
+            & img {
+                transition: transform 0.5s ease-in-out;
+            }
+
+        }
+
+        &__image {
+            overflow: hidden;
+        }
+
+        &__name {
+            margin-block-start: 0;
+
+            h3 {
+                margin: .5rem 0;
+                font-size: var(--wp--preset--font-size--normal);
+            }
+        }
+
+        &__title {
+            margin-block-start: 0;
+
+            a {
+                color: var(--wp--preset--color--smokey);
+                text-decoration: none;
+                
+                &:hover {
+                    color: var(--wp--preset--color--river);
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}
+
+// Form Styling anything custom that doesn't use grid/utility classes
