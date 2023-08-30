@@ -17,6 +17,12 @@ function enqueue_child_theme_styles() {
 }
 add_action('wp_enqueue_scripts', 'enqueue_child_theme_styles');
 
+// ----- Custom Image Sizes ----- //
+function custom_image_sizes() {
+    add_image_size('square_crop', 500, 500, true);
+}
+add_action('after_setup_theme', 'custom_image_sizes');
+
 
 // ----- Custom Gutenberg Blocks ----- //
 wp_register_style( 'sm-block-style',  get_stylesheet_directory_uri() .'/assets/css/blocks.css', array(), null, 'all' );
@@ -91,7 +97,7 @@ function modify_counselor_api_data($data, $post, $request) {
         $counselor_image_array = get_field('counselor_image', $data->data['id']);
         
         if (is_array($counselor_image_array) && isset($counselor_image_array)) {
-            $counselor_image_url = $counselor_image_array['sizes']['medium_large'];
+            $counselor_image_url = $counselor_image_array['sizes']['square_crop'];
             
             if ($counselor_image_url !== null) {
                 $data->data['acf']['counselor_image_url'] = $counselor_image_url;
