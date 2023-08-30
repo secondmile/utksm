@@ -95,12 +95,21 @@ function modify_counselor_api_data($data, $post, $request) {
             
             if ($counselor_image_url !== null) {
                 $data->data['acf']['counselor_image_url'] = $counselor_image_url;
+            } else {
+                // Use a default image URL if counselor_image_url is not available
+                $defaultImageURL = get_template_directory_uri() . '/assets/images/sample_1920x1200.jpg';
+                $data->data['acf']['counselor_image_url'] = $defaultImageURL;
             }
+        } else {
+            // Use a default image URL if counselor_image is not set
+            $defaultImageURL = get_template_directory_uri() . '/assets/images/sample_1920x1200.jpg';
+            $data->data['acf']['counselor_image_url'] = $defaultImageURL;
         }
     }
 
     return $data;
 }
+
 
 // Apply the modification to "counselor" custom post type API during WordPress initialization
 add_action('init', function() {
