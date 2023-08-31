@@ -1,0 +1,41 @@
+.perfmatters-lazy-youtube {
+    // Plugin overrides, things remain very !important in here
+
+    // play button graphic for the facade
+    .play {
+        width: clamp(60px,40%,276px) !important;
+        height: clamp(60px,40%,276px) !important;
+        left: calc(50% - (clamp(60px, 40%, 276px)/2))!important;
+        margin-left: 0!important;
+        margin-top: calc((clamp(60px, 40%, 276px)/2)*-1)!important;
+        background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg id='Layer_1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 298 298'%3E%3Cdefs%3E%3Cstyle%3E.cls-1%7Bfill:%23fff;%7D%3C/style%3E%3C/defs%3E%3Cg id='Group_2618'%3E%3Cpath id='Exclusion_12' class='cls-1' d='m149,298c-10.1,0-20.1-1-30-3-19.1-3.9-37.2-11.5-53.3-22.4-24-16.2-42.7-38.9-54-65.6-3.8-9-6.7-18.4-8.7-28-4-19.8-4-40.2,0-60.1,3.9-19.1,11.5-37.2,22.4-53.3,16.2-24,38.9-42.7,65.6-54,9-3.8,18.4-6.7,28-8.7,19.8-4,40.2-4,60.1,0,19.1,3.9,37.2,11.5,53.3,22.4,24,16.2,42.7,38.9,54,65.6,3.8,9,6.7,18.4,8.7,28,4,19.8,4,40.2,0,60.1-3.9,19.1-11.5,37.2-22.4,53.3-16.2,24-38.9,42.7-65.6,54-9,3.8-18.4,6.7-28,8.7-9.9,2-19.9,3-30,3Zm0-258c-7.4,0-14.7.7-22,2.2-13.9,2.9-27.2,8.4-39,16.4-17.5,11.8-31.2,28.5-39.5,48-2.8,6.6-4.9,13.4-6.4,20.5-3,14.5-3,29.4,0,43.9,2.9,13.9,8.4,27.2,16.4,39,11.8,17.5,28.5,31.2,48,39.5,6.6,2.8,13.4,4.9,20.5,6.4,14.5,3,29.4,3,43.9,0,13.9-2.9,27.2-8.4,39-16.4,17.5-11.8,31.2-28.5,39.5-48,2.8-6.6,4.9-13.4,6.4-20.5,3-14.5,3-29.4,0-43.9-2.9-13.9-8.4-27.2-16.4-39-11.8-17.5-28.5-31.2-48-39.5-6.6-2.8-13.4-4.9-20.5-6.4-7.2-1.5-14.6-2.2-22-2.2Z'/%3E%3Cpath id='Polygon_6' class='cls-1' d='m212.7,149l-94.2,54.4v-108.7l94.2,54.4Z'/%3E%3C/g%3E%3C/svg%3E") !important;
+        background-repeat: no-repeat !important;
+        background-size: contain !important;
+        opacity: .69 !important;
+        filter: drop-shadow(0 0 1.5rem rgb(88,89,91)) !important;
+        transition: .25s ease-in-out !important;
+    }
+
+    // When hovering over the whole facade, update styling on play button
+    &:hover {
+        .play {
+            transform: scale(1.04) !important;
+            transform-origin: center !important;
+            transition: .25s ease-in-out !important;
+            opacity: .9 !important;
+        }
+
+        // When hovering over the whole facade, zoom in the bg image
+        img {
+            transform: scale(1.05);
+            filter: saturate(130%) !important;
+            cursor: pointer !important;
+        }
+    }
+
+    // The container for the facade; the plugin doesn't provide a class
+    & > div {
+        transition: transform 0.3s ease;
+        overflow: hidden;
+    }
+}
