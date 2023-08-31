@@ -1,6 +1,14 @@
 .sm--counselor-query-block {
+    ul {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+    }
+    
     .counselor-loop {
         &__counselor-block {
+            flex-basis: 30%;
+
             .wp-block-group {
                 padding-top:var(--wp--preset--spacing--x-small);
                 padding-right:var(--wp--preset--spacing--x-small);
