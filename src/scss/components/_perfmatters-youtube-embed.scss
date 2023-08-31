@@ -5,6 +5,7 @@
     .play {
         width: clamp(60px,40%,276px) !important;
         height: clamp(60px,40%,276px) !important;
+        top: calc(50% + (60px / 2)) !important;
         left: calc(50% - (clamp(60px, 40%, 276px)/2))!important;
         margin-left: 0!important;
         margin-top: calc((clamp(60px, 40%, 276px)/2)*-1)!important;
