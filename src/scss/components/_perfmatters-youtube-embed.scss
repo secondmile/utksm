@@ -1,4 +1,5 @@
 .perfmatters-lazy-youtube {
+    z-index: 1000; // Displays above lightbox-overlay when it's activated
     // Plugin overrides, things remain very !important in here
 
     // play button graphic for the facade
@@ -39,3 +40,16 @@
         overflow: hidden;
     }
 }
+
+// Style for the lightbox overlay (hidden by default)
+.lightbox-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none; // Initially hidden
+    z-index: 999; // Higher z-index to cover the entire page
+}
+  

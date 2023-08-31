@@ -87,6 +87,7 @@ function enqueue_scripts() {
 
      // Enqueue your custom script with ACF as a dependency
      wp_enqueue_script('gform-ajax-submit', get_stylesheet_directory_uri() . '/assets/js/gformAjaxSubmit.js', array('jquery', 'acf'), '1.0', true);
+     wp_enqueue_script('perfmatters-youtube-embed', get_stylesheet_directory_uri() . '/assets/js/perfmattersYoutubeEmbed.js', array('jquery', 'acf'), '1.0', true);
 }
 add_action('wp_enqueue_scripts', 'enqueue_scripts');
 
@@ -124,3 +125,8 @@ add_action('init', function() {
 
 // Removes Gravity Form Submit Button
 add_filter( 'gform_submit_button_3', '__return_empty_string' );
+
+// Perfmatters Youtube Thumbnail image quality
+add_filter('perfmatters_lazyload_youtube_thumbnail_resolution', function($resolution) {
+    return 'sddefault';
+});
