@@ -8,7 +8,15 @@ document.addEventListener('DOMContentLoaded', function () {
     perfmattersLazyYouTubes.forEach(function(perfmattersLazyYouTube) {
       perfmattersLazyYouTube.addEventListener('click', function (event) {
         event.preventDefault();
-        perfmattersLazyYouTube.style.zIndex = 1000; // Set z-index for the clicked element
+        
+        // Update styles for the clicked element
+        perfmattersLazyYouTube.style.zIndex = 1000;
+        perfmattersLazyYouTube.style.width = '80%';
+        perfmattersLazyYouTube.style.position = 'fixed';
+        perfmattersLazyYouTube.style.top = 'calc(50% - (80% / 2))';
+        perfmattersLazyYouTube.style.height = '80%';
+        perfmattersLazyYouTube.style.left = 'calc(50% - (80% / 2))';
+  
         lightboxOverlay.style.display = 'block';
         document.body.style.overflow = 'hidden';
       });
@@ -16,7 +24,12 @@ document.addEventListener('DOMContentLoaded', function () {
   
     lightboxOverlay.addEventListener('click', function () {
       perfmattersLazyYouTubes.forEach(function(perfmattersLazyYouTube) {
-        perfmattersLazyYouTube.style.zIndex = ''; // Remove z-index from all elements
+        perfmattersLazyYouTube.style.zIndex = '';
+        perfmattersLazyYouTube.style.width = '';
+        perfmattersLazyYouTube.style.position = '';
+        perfmattersLazyYouTube.style.top = '';
+        perfmattersLazyYouTube.style.height = '';
+        perfmattersLazyYouTube.style.left = '';
       });
       lightboxOverlay.style.display = 'none';
       document.body.style.overflow = 'auto';
