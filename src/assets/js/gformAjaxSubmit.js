@@ -19,10 +19,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const stateField = form.querySelector('#input_3_8');
         const countryField = form.querySelector('#input_3_9');
         const countyFieldTennessee = form.querySelector('#input_3_10');
-        const countyFieldCalifornia = form.querySelector('#input_3_10');
-        const countyFieldTexas = form.querySelector('#input_3_10');
-        const countyFieldGeorgia = form.querySelector('#input_3_10');
-        const countyFieldNorthCarolina = form.querySelector('#input_3_10');
+        const countyFieldTexas = form.querySelector('#input_3_11');
+        const countyFieldNorthCarolina = form.querySelector('#input_3_12');
+        const countyFieldCalifornia = form.querySelector('#input_3_13');
+        const countyFieldGeorgia = form.querySelector('#input_3_14');
 
         // Add event listeners to radio buttons within the specialization group
         specializationRadios.forEach(radio => {
