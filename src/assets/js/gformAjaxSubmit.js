@@ -14,8 +14,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Attach event listeners to each form field
         const specializationRadios = form.querySelectorAll('input[name="input_6"]');
+        
+        // input_{form_id}_{field_id}
         const stateField = form.querySelector('#input_3_8');
         const countryField = form.querySelector('#input_3_9');
+        const countyFieldTennessee = form.querySelector('#input_3_10');
+        const countyFieldCalifornia = form.querySelector('#input_3_10');
+        const countyFieldTexas = form.querySelector('#input_3_10');
+        const countyFieldGeorgia = form.querySelector('#input_3_10');
+        const countyFieldNorthCarolina = form.querySelector('#input_3_10');
 
         // Add event listeners to radio buttons within the specialization group
         specializationRadios.forEach(radio => {
@@ -27,6 +34,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         stateField.addEventListener('change', captureAndDisplaySelections);
         countryField.addEventListener('change', captureAndDisplaySelections);
+        countyFieldTennessee.addEventListener('change', captureAndDisplaySelections);
+        countyFieldCalifornia.addEventListener('change', captureAndDisplaySelections);
+        countyFieldTexas.addEventListener('change', captureAndDisplaySelections);
+        countyFieldGeorgia.addEventListener('change', captureAndDisplaySelections);
+        countyFieldNorthCarolina.addEventListener('change', captureAndDisplaySelections);
 
         // Interaction handler (capture selections, update results)
         function captureAndDisplaySelections() {
@@ -34,12 +46,22 @@ document.addEventListener('DOMContentLoaded', function () {
             const selectedSpecialization = getSelectedRadio(specializationRadios);
             const selectedState = getSelectedOption(stateField);
             const selectedCountry = getSelectedOption(countryField);
+            const selectedCountyTennessee = getSelectedOption(countyFieldTennessee);
+            const selectedCountyCalifornia = getSelectedOption(countyFieldCalifornia);
+            const selectedCountyTexas = getSelectedOption(countyFieldTexas);
+            const selectedCountyGeorgia = getSelectedOption(countyFieldGeorgia);
+            const selectedCountyNorthCarolina = getSelectedOption(countyFieldNorthCarolina);
         
             // Update the array
             selectedFilters.length = 0; // Clear the array
             if (selectedSpecialization) selectedFilters.push(selectedSpecialization);
             if (selectedState) selectedFilters.push(selectedState);
             if (selectedCountry) selectedFilters.push(selectedCountry);
+            if (selectedCountyTennessee) selectedFilters.push(selectedCountyTennessee);
+            if (selectedCountyCalifornia) selectedFilters.push(selectedCountyCalifornia);
+            if (selectedCountyTexas) selectedFilters.push(selectedCountyTexas);
+            if (selectedCountyGeorgia) selectedFilters.push(selectedCountyGeorgia);
+            if (selectedCountyNorthCarolina) selectedFilters.push(selectedCountyNorthCarolina);
         
             // Fetch the updated content
             updateQueryLoopBlockContent(selectedFilters);
