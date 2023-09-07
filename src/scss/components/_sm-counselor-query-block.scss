@@ -5,6 +5,10 @@
         flex-direction: row;
     }
     
+    .error-message {
+        margin-top: 30%;
+    }
+
     .counselor-loop {
         &__counselor-block {
             flex-basis: 30%;
