@@ -63,6 +63,8 @@ document.addEventListener('DOMContentLoaded', function () {
             if (selectedCountyGeorgia) selectedFilters.push(selectedCountyGeorgia);
             if (selectedCountyNorthCarolina) selectedFilters.push(selectedCountyNorthCarolina);
         
+            console.log(selectedFilters);
+
             // Fetch the updated content
             updateQueryLoopBlockContent(selectedFilters);
         }
@@ -170,31 +172,37 @@ document.addEventListener('DOMContentLoaded', function () {
     function generateMarkupFromJSON(data) {
         // Process the JSON data and generate HTML markup
         let markup = '';
-        
-        // Loop through the data and generate markup
-        data.forEach(item => {
-            const title = item.title.rendered;
-            const acfData = item.acf;
-            const acfTermEndpoint = item._links[`wp:term`][0].href;
-
-
-            const combinedData = { title, ...acfData };
-
-            // Generate markup for ACF fields
-            const acfMarkup = generateACFMarkup(combinedData);
-            const blockQueryClasses = 'wp-block-query is-layout-flow wp-block-query-is-layout-flow';
-
-            if (acfMarkup !== '') {
-                // Render the entire counselor item if there's non-empty ACF markup
-                markup += `<div class="${blockQueryClasses} counselor-loop__counselor-block">${acfMarkup}</div>`;
-            }
-        });
-
+        console.log('BIKI DATA: ', data);
+    
+        if (data.length === 0) {
+            // Display an error message if no counselors are found
+            markup = '<p class="error-message">No counselors found for the selected criteria. Consider broadening your search or changing your filters.</p>';
+        } else {
+            // Loop through the data and generate markup
+            data.forEach(item => {
+                const title = item.title.rendered;
+                const acfData = item.acf;
+                const acfTermEndpoint = item._links[`wp:term`][0].href;
+    
+                const combinedData = { title, ...acfData };
+    
+                // Generate markup for ACF fields
+                const acfMarkup = generateACFMarkup(combinedData);
+                const blockQueryClasses = 'wp-block-query is-layout-flow wp-block-query-is-layout-flow';
+    
+                if (acfMarkup !== '') {
+                    // Render the entire counselor item if there's non-empty ACF markup
+                    markup += `<div class="${blockQueryClasses} counselor-loop__counselor-block">${acfMarkup}</div>`;
+                }
+            });
+        }
+    
         return markup;
     }
+    
 
     function generateACFMarkup(combinedData) {
-        const counselorSlateUrl = combinedData.counselor_slate_url;
+        const counselorSlateUrl = combinedData.counselor_slate_url ? '' : '/contact-us/';
 
         // Defines the field data + markup, but not the order in which they are presented (see fieldOrder)
         const fieldRenderers = {
