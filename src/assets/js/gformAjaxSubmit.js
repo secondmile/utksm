@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (selectedCountyGeorgia) selectedFilters.push(selectedCountyGeorgia);
             if (selectedCountyNorthCarolina) selectedFilters.push(selectedCountyNorthCarolina);
         
-            console.log(selectedFilters);
+            console.log('Biki Filters: ', selectedFilters);
 
             // Fetch the updated content
             updateQueryLoopBlockContent(selectedFilters);
@@ -145,6 +145,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     const jsonData = JSON.parse(xhr.responseText);
                     const markup = generateMarkupFromJSON(jsonData);
 
+                    // Log the result count to the console
+                    console.log(`${jsonData.length} results found. ${apiURL}`);
+
                     // Get the resultsSelector element
                     const resultsSelector = document.querySelector('.sm--counselor-query-block');
 
@@ -172,7 +175,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function generateMarkupFromJSON(data) {
         // Process the JSON data and generate HTML markup
         let markup = '';
-        console.log('BIKI DATA: ', data);
+        // console.log('BIKI DATA: ', data);
     
         if (data.length === 0) {
             // Display an error message if no counselors are found
@@ -182,8 +185,6 @@ document.addEventListener('DOMContentLoaded', function () {
             data.forEach(item => {
                 const title = item.title.rendered;
                 const acfData = item.acf;
-                const acfTermEndpoint = item._links[`wp:term`][0].href;
-    
                 const combinedData = { title, ...acfData };
     
                 // Generate markup for ACF fields
@@ -253,18 +254,13 @@ document.addEventListener('DOMContentLoaded', function () {
         `;
     }
 
-    // async function generateImageMarkup(imageID) {
-    //     return `<div class="counselor-loop__image">Image</div>`;
-    //     // const imageURL = await getImageURLByID(imageID);
-    //     // return `<div class="acf-field"><strong>counselor_image:</strong> <img src="${imageURL}" alt="Image" /></div>`;
-    // }
-
     // Function to update Query Loop block content
     function updateQueryLoopBlockContent(filters) {
-        const queryLoopBlockId = 3;
+        const queryLoopBlockId = 3; // Gravity Form ID
 
         // Construct the API URL with selected filters
-        let apiUrl = `/wp-json/wp/v2/counselor`;
+        // Wordpress limits api results to 10; updated to 50
+        let apiUrl = `/wp-json/wp/v2/counselor?per_page=50`;
 
         filters.forEach((filter, index) => {
             const { label, value } = filter;
@@ -272,7 +268,7 @@ document.addEventListener('DOMContentLoaded', function () {
             
             // Append appropriate separator based on index
             if (index === 0) {
-                apiUrl += `?${labelToSlug}=${value}`;
+                apiUrl += `&${labelToSlug}=${value}`;
             } else {
                 apiUrl += `&${labelToSlug}=${value}`;
             }
