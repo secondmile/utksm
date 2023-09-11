@@ -11,6 +11,7 @@
 
     .counselor-loop {
         &__counselor-block {
+            position: relative; // Needed to hoist anchor to wrap parent elements (see ::before below)
             flex-basis: 30%;
 
             .wp-block-group {
@@ -56,9 +57,38 @@
                     color: var(--wp--preset--color--river);
                     text-decoration: underline;
                 }
+
+                &::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    bottom: 0;
+                    left: 0;
+                }
             }
         }
     }
 }
 
 // Form Styling anything custom that doesn't use grid/utility classes
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select,
+textarea {
+    -webkit-appearance: none; /* Override Safari's default styles */
+    -moz-appearance: none;
+    appearance: none;
+}
+
+select {
+    background-image: url('./assets/svg/rocky-top-carrot-01.svg');
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    background-size: 16px 16px;
+
+    &:hover {
+        cursor: pointer;
+    }
+}

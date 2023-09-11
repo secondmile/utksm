@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const countyFieldNorthCarolina = form.querySelector('#input_3_12');
         const countyFieldCalifornia = form.querySelector('#input_3_13');
         const countyFieldGeorgia = form.querySelector('#input_3_14');
+        const schoolFieldTennessee = form.querySelector('#input_3_16');
 
         // // Add event listeners to radio buttons within the specialization group
         specializationField.addEventListener('change', () => {
@@ -28,15 +29,27 @@ document.addEventListener('DOMContentLoaded', function () {
             // captureAndDisplaySelections();
         });
 
+        function clearField(field) {
+            field.value = ''; // Clear the field's value
+        }
+
         specializationField.addEventListener('change', captureAndDisplaySelections);
         stateField.addEventListener('change', captureAndDisplaySelections);
         countryField.addEventListener('change', captureAndDisplaySelections);
-        countyFieldTennessee.addEventListener('change', captureAndDisplaySelections);
         countyFieldCalifornia.addEventListener('change', captureAndDisplaySelections);
         countyFieldTexas.addEventListener('change', captureAndDisplaySelections);
         countyFieldGeorgia.addEventListener('change', captureAndDisplaySelections);
         countyFieldNorthCarolina.addEventListener('change', captureAndDisplaySelections);
-
+        
+        countyFieldTennessee.addEventListener('change', () => {
+            clearField(schoolFieldTennessee);
+            captureAndDisplaySelections();
+        });
+        schoolFieldTennessee.addEventListener('change', () => {
+            clearField(countyFieldTennessee);
+            captureAndDisplaySelections();
+        });
+        
         // Interaction handler (capture selections, update results)
         function captureAndDisplaySelections() {
             // Capture the selected options from the form fields
@@ -49,6 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const selectedCountyTexas = getSelectedOption(countyFieldTexas);
             const selectedCountyGeorgia = getSelectedOption(countyFieldGeorgia);
             const selectedCountyNorthCarolina = getSelectedOption(countyFieldNorthCarolina);
+            const selectedSchoolTennessee = getSelectedOption(schoolFieldTennessee);
         
             // Update the array
             selectedFilters.length = 0; // Clear the filter array
@@ -60,6 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (selectedCountyTexas) selectedFilters.push(selectedCountyTexas);
             if (selectedCountyGeorgia) selectedFilters.push(selectedCountyGeorgia);
             if (selectedCountyNorthCarolina) selectedFilters.push(selectedCountyNorthCarolina);
+            if (selectedSchoolTennessee) selectedFilters.push(selectedSchoolTennessee);
         
             console.log('Biki Filters: ', selectedFilters);
 
