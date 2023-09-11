@@ -1,10 +1,17 @@
 .sm--counselor-query-block {
+    // opacity: 1;
+    transition: opacity 0.2s ease-out;
+    
+    .fade {
+        opacity: 0;
+    }
+    
     ul {
         display: flex;
         flex-wrap: wrap;
         flex-direction: row;
     }
-    
+
     .error-message {
         margin-top: 30%;
     }

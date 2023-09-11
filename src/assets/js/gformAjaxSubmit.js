@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
-  const counselorQueryBlock = document.querySelector('.sm--counselor-query-block');
+    const counselorQueryBlock = document.querySelector('.sm--counselor-query-block');
   
     // Exit the script if the element doesn't exist
     if (!counselorQueryBlock) {
-    return;
+        return;
     }
 
     const selectedFilters = [];
@@ -117,8 +117,12 @@ document.addEventListener('DOMContentLoaded', function () {
         
             console.log('Biki Filters: ', selectedFilters);
 
-            // Fetch the updated content
-            updateQueryLoopBlockContent(selectedFilters);
+            document.querySelector('.sm--counselor-query-block').classList.add('fade');
+            
+            setTimeout( () => {
+                // Fetch the updated content
+                updateQueryLoopBlockContent(selectedFilters);
+            }, 200);
         }
         
         // Dropdown Selection handling
@@ -200,10 +204,16 @@ document.addEventListener('DOMContentLoaded', function () {
                     const blockLayoutClasses = 'columns-3 wp-block-post-template has-base-font-size is-layout-grid wp-container-24 wp-block-post-template-is-layout-grid';
 
                     if (resultsSelector) {
+
                         // Update the target element with the generated content
                         resultsSelector.innerHTML = `
                             <ul class="${blockLayoutClasses}">${markup}</ul>
                         `;
+
+                        // After a short delay, remove the 'fade' class to fade in the new content
+                        setTimeout(() => {
+                            resultsSelector.classList.remove('fade');
+                        }, 200);
                     } else {
                         // Display an error message if resultsSelector doesn't exist
                         console.error("Results cannot be displayed without the resultsSelector existing on the page");
@@ -320,7 +330,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
         });
-
 
         // Call the AJAX function with the constructed API URL
         updateQueryLoopBlockContentWithAjax(apiUrl);
