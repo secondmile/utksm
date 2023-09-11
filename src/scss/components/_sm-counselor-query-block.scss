@@ -92,3 +92,10 @@ select {
         cursor: pointer;
     }
 }
+
+// Nested form elements that can't be given a unique class but needs to be stomped.
+// If the field is empty, it still renders. Who coded that?! They should be perfect like me /joke
+.sm--form-separator h3 {
+    display: none !important;
+    margin: 0 !important;
+}

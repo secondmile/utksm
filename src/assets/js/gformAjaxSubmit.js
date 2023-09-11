@@ -12,6 +12,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const form = document.querySelector(formSelector);
         const display = document.querySelector(displaySelector);
 
+        // Clears form field data so they don't stack up
+        function clearFields(...fields) {
+            fields.forEach(field => {
+                field.value = '';
+            });
+        }
+
         // input_{form_id}_{field_id}
         const specializationField = form.querySelector('#input_3_15');
         const stateField = form.querySelector('#input_3_8');
@@ -23,30 +30,62 @@ document.addEventListener('DOMContentLoaded', function () {
         const countyFieldGeorgia = form.querySelector('#input_3_14');
         const schoolFieldTennessee = form.querySelector('#input_3_16');
 
-        // // Add event listeners to radio buttons within the specialization group
+        // Top-level selections clear child selections when changed
         specializationField.addEventListener('change', () => {
-            clearFields(stateField, countryField, countyFieldTennessee, countyFieldCalifornia, countyFieldTexas, countyFieldGeorgia, countyFieldNorthCarolina);
-            // captureAndDisplaySelections();
+            clearFields(
+                stateField,
+                countryField,
+                countyFieldTennessee,
+                countyFieldCalifornia,
+                countyFieldTexas,
+                countyFieldGeorgia,
+                countyFieldNorthCarolina,
+                schoolFieldTennessee
+            );
+
+            captureAndDisplaySelections();
         });
 
-        function clearField(field) {
-            field.value = ''; // Clear the field's value
-        }
+        stateField.addEventListener('change', () => {
+            clearFields(
+                countryField,
+                countyFieldTennessee,
+                countyFieldCalifornia,
+                countyFieldTexas,
+                countyFieldGeorgia,
+                countyFieldNorthCarolina,
+                schoolFieldTennessee
+            );
 
-        specializationField.addEventListener('change', captureAndDisplaySelections);
-        stateField.addEventListener('change', captureAndDisplaySelections);
-        countryField.addEventListener('change', captureAndDisplaySelections);
+            captureAndDisplaySelections();
+        });
+        
+        countryField.addEventListener('change', () => {
+            clearFields(
+                stateField,
+                countyFieldTennessee,
+                countyFieldCalifornia,
+                countyFieldTexas,
+                countyFieldGeorgia,
+                countyFieldNorthCarolina,
+                schoolFieldTennessee
+            );
+
+            captureAndDisplaySelections();
+        });
+        
         countyFieldCalifornia.addEventListener('change', captureAndDisplaySelections);
         countyFieldTexas.addEventListener('change', captureAndDisplaySelections);
         countyFieldGeorgia.addEventListener('change', captureAndDisplaySelections);
         countyFieldNorthCarolina.addEventListener('change', captureAndDisplaySelections);
         
+        // Create an "or" condition for these State-specific filters
         countyFieldTennessee.addEventListener('change', () => {
-            clearField(schoolFieldTennessee);
+            clearFields(schoolFieldTennessee);
             captureAndDisplaySelections();
         });
         schoolFieldTennessee.addEventListener('change', () => {
-            clearField(countyFieldTennessee);
+            clearFields(countyFieldTennessee);
             captureAndDisplaySelections();
         });
         
@@ -137,13 +176,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         
             return '';
-        }
-
-        // // Clears form field data so they don't stack up
-        function clearFields(...fields) {
-            fields.forEach(field => {
-                field.value = '';
-            });
         }
     }
 
