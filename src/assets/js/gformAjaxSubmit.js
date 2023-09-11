@@ -12,10 +12,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const form = document.querySelector(formSelector);
         const display = document.querySelector(displaySelector);
 
-        // Attach event listeners to each form field
-        const specializationRadios = form.querySelectorAll('input[name="input_6"]');
-        
         // input_{form_id}_{field_id}
+        const specializationField = form.querySelector('#input_3_15');
         const stateField = form.querySelector('#input_3_8');
         const countryField = form.querySelector('#input_3_9');
         const countyFieldTennessee = form.querySelector('#input_3_10');
@@ -24,14 +22,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const countyFieldCalifornia = form.querySelector('#input_3_13');
         const countyFieldGeorgia = form.querySelector('#input_3_14');
 
-        // Add event listeners to radio buttons within the specialization group
-        specializationRadios.forEach(radio => {
-            radio.addEventListener('click', () => {
-                clearFields(stateField, countryField);
-                captureAndDisplaySelections();
-            });
+        // // Add event listeners to radio buttons within the specialization group
+        specializationField.addEventListener('change', () => {
+            clearFields(stateField, countryField, countyFieldTennessee, countyFieldCalifornia, countyFieldTexas, countyFieldGeorgia, countyFieldNorthCarolina);
+            // captureAndDisplaySelections();
         });
 
+        specializationField.addEventListener('change', captureAndDisplaySelections);
         stateField.addEventListener('change', captureAndDisplaySelections);
         countryField.addEventListener('change', captureAndDisplaySelections);
         countyFieldTennessee.addEventListener('change', captureAndDisplaySelections);
@@ -43,7 +40,8 @@ document.addEventListener('DOMContentLoaded', function () {
         // Interaction handler (capture selections, update results)
         function captureAndDisplaySelections() {
             // Capture the selected options from the form fields
-            const selectedSpecialization = getSelectedRadio(specializationRadios);
+            // const selectedSpecialization = getSelectedRadio(specializationRadios);
+            const selectedSpecialization = getSelectedOption(specializationField);
             const selectedState = getSelectedOption(stateField);
             const selectedCountry = getSelectedOption(countryField);
             const selectedCountyTennessee = getSelectedOption(countyFieldTennessee);
@@ -53,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const selectedCountyNorthCarolina = getSelectedOption(countyFieldNorthCarolina);
         
             // Update the array
-            selectedFilters.length = 0; // Clear the array
+            selectedFilters.length = 0; // Clear the filter array
             if (selectedSpecialization) selectedFilters.push(selectedSpecialization);
             if (selectedState) selectedFilters.push(selectedState);
             if (selectedCountry) selectedFilters.push(selectedCountry);
@@ -88,22 +86,22 @@ document.addEventListener('DOMContentLoaded', function () {
             return null;
         }
         
-        // Radio selection handling
-        function getSelectedRadio(radioButtons) {
-            const selectedRadio = Array.from(radioButtons).find(radio => radio.checked);
+        // Radio selection handling (keeping in case we use radios for anything later)
+        // function getSelectedRadio(radioButtons) {
+        //     const selectedRadio = Array.from(radioButtons).find(radio => radio.checked);
         
-            if (selectedRadio) {
-                const parentFieldId = getParentFieldId(selectedRadio);
-                const extractedKey = getExtractedKeyFromClass(parentFieldId);
+        //     if (selectedRadio) {
+        //         const parentFieldId = getParentFieldId(selectedRadio);
+        //         const extractedKey = getExtractedKeyFromClass(parentFieldId);
         
-                return {
-                    label: extractedKey,
-                    value: selectedRadio.value,
-                };
-            }
+        //         return {
+        //             label: extractedKey,
+        //             value: selectedRadio.value,
+        //         };
+        //     }
         
-            return null;
-        }
+        //     return null;
+        // }
         
         // Select parent ID containing keys
         function getParentFieldId(element) {
@@ -126,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return '';
         }
 
-        // Clears form field data so they don't stack up
+        // // Clears form field data so they don't stack up
         function clearFields(...fields) {
             fields.forEach(field => {
                 field.value = '';
@@ -266,11 +264,13 @@ document.addEventListener('DOMContentLoaded', function () {
             const { label, value } = filter;
             const labelToSlug = label.toLowerCase().replace(/\s+/g, '-'); // Transform label to slug format
             
-            // Append appropriate separator based on index
-            if (index === 0) {
-                apiUrl += `&${labelToSlug}=${value}`;
-            } else {
-                apiUrl += `&${labelToSlug}=${value}`;
+            if (value !== undefined && value !== '') {
+                // Append appropriate separator based on index
+                if (index === 0) {
+                    apiUrl += `&${labelToSlug}=${value}`;
+                } else {
+                    apiUrl += `&${labelToSlug}=${value}`;
+                }
             }
         });
 
