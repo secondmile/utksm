@@ -23,45 +23,54 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .then(data => {
                 localCounselorData = data;
-                console.log(`🐝🗝️ | API URL: ${apiUrl}`);
-                console.log(`🐝🗝️ | Stored Data: ${localCounselorData.length} Results`);
-                console.log(localCounselorData);
+                // console.log(`🐝🗝️ | API URL: ${apiUrl}`);
+                // console.log(`🐝🗝️ | Stored Data: ${localCounselorData.length} Results`);
+                // console.log(localCounselorData);
+
+                updateFilters();
             })
             .catch(error => {
                 console.error('Error updating Counselor Data object:', error);
             })
     }
 
-    // Periodically update data (twice a day) BIKI: activate this after main production concludes
+    // BIKI: activate this after main production concludes
+    // Periodically update data (twice a day)
     // setInterval(updateData, 12 * 60 * 60 * 1000); // 12 hours
     updateData();
 
     function updateFilteredData() {
         // Clear the existing filteredData array
         filteredData.length = 0;
-    
+        
         // Iterate through localCounselorData and filter based on selectedFilters
         for (const counselor of localCounselorData) {
+            // filteredData.push(counselor);
             let matchesAllFilters = true;
-
-            console.log('COUNSELOR');
-            console.log(counselor);
-            
+    
             for (const filter of selectedFilters) {
-                
-                console.log('FILTER');
-                console.log(filter);
-                
+                console.log('Biki filter in loop');
+                const gFormLabel = filter.label;
+                const gFormValue = parseInt(filter.value.trim(), 10);
+                console.log(typeof(gFormValue));
+    
                 // Check if the counselor has the filter category
-                if (!counselor[filter.label]) {
-                    console.log(`Counselor does not have category ${filter.label}`);
+                if (!counselor[gFormLabel]) {
+                    console.log(`Counselor does not have category ${gFormLabel}`);
                     matchesAllFilters = false;
                     break; // No need to continue checking other filters for this counselor
                 }
     
                 // Check if the value matches
-                if (counselor[filter.label] !== filter.value) {
-                    console.log(`Counselor ${counselor[filter.label]} does not match value ${filter.value} for category ${filter.label}`);
+                if (Array.isArray(counselor[gFormLabel])) {
+                    // If it's an array, check if gFormValue exists within the array
+                    if (!counselor[gFormLabel].includes(gFormValue)) {
+                        console.log(`Counselor ${gFormLabel} does not contain value ${gFormValue}`);
+                        matchesAllFilters = false;
+                        break; // No need to continue checking other filters for this counselor
+                    }
+                } else if (counselor[gFormLabel] !== gFormValue) {
+                    console.log(`Counselor ${counselor[gFormLabel]} does not match value ${gFormValue} for category ${gFormLabel}`);
                     matchesAllFilters = false;
                     break; // No need to continue checking other filters for this counselor
                 }
@@ -70,13 +79,13 @@ document.addEventListener('DOMContentLoaded', function () {
             // If the counselor matches all selected filters, add it to filteredData
             if (matchesAllFilters) {
                 filteredData.push(counselor);
+                console.log("🐺✨"); // Wolf emoji with sparkles
             }
         }
     
         console.log(`🐝🗝️ | Filtered Data:`);
         console.log(filteredData);
-    }
-    
+    }   
 
     function updateFilters() {
         const gravityFormID = 3;
@@ -165,19 +174,16 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 }
             }
-            
-            updateFilteredData();
-
             console.log(`🐝🗝️ | Selected Filters:`);
             console.log(selectedFilters);
+            
+            updateFilteredData();
         }
         
     
         // Initial update of selected filters
         updateSelectedFilters();
     }
-
-    updateFilters();
 
 
 
