@@ -1,12 +1,165 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const counselorQueryBlock = document.querySelector('.sm--counselor-query-block');
+
+    // This selector must be present on the page for anything more to fire
+    const resultsSelector = document.querySelector('.sm--counselor-query-block');
   
     // Exit the script if the element doesn't exist
-    if (!counselorQueryBlock) {
+    if (!resultsSelector) {
         return;
     }
 
+    const apiUrl = '/wp-json/wp/v2/counselor?per_page=50';
+    let localCounselorData = [];
     const selectedFilters = [];
+    
+    function updateData() {
+        fetch(apiUrl)
+            .then(response => {
+                if(!response.ok) {
+                    throw new Error('Counselor Filter Data: Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                localCounselorData = data;
+                console.log(`🐝🗝️ | API URL: ${apiUrl}`);
+                console.log(`🐝🗝️ | Stored Data: ${localCounselorData.length} Results`);
+                console.log(localCounselorData);
+            })
+            .catch(error => {
+                console.error('Error updating Counselor Data object:', error);
+            })
+    }
+
+    // Periodically update data (twice a day) BIKI: activate this after main production concludes
+    // setInterval(updateData, 12 * 60 * 60 * 1000); // 12 hours
+    updateData();
+
+    function updateFilters() {
+        const gravityFormID = 3;
+        const formSelector = document.querySelector('.smm-gform__counselor_wrapper');
+
+        // Gravity Form Input IDs
+        const gravityFormInputs = {
+            'specializations': 16,
+            'states': 8,
+            'countries': 9,
+            'counties-in-tennessee': 10,
+            'counties-in-texax': 11,
+            'counties-in-north-carolina': 12,
+            'counties-in-california': 13,
+            'counties-in-georgia': 14,
+            'schools-in-tennessee': 18,
+        }
+
+        const fieldSelectors = {};
+
+        // Create Selectors from input IDs
+        for (const key in gravityFormInputs) {
+            if (gravityFormInputs.hasOwnProperty(key)) {
+                const value = gravityFormInputs[key];
+                
+                // input_{form_id}_{field_id}
+                const selector = `#input_${gravityFormID}_${value}`;
+
+                fieldSelectors[key] = selector;
+
+                // Event Listeners attached to each of the inputs
+                const selectField = formSelector.querySelector(selector);
+                if(selectField) {
+                    selectField.addEventListener('change', () => {
+                        updateSelectedFilters();
+                    });
+                }
+            }
+        }
+
+        // We have to match up gForm selections and ACF data by ID's
+        // Select parent ID containing gForm keys
+        function getParentFieldId(element) {
+            const parentField = element.closest('[id^="field_"]');
+            return parentField ? parentField.id : '';
+        }
+        
+        // Extract the key from that parent class for key:value matching for our data params
+        function getExtractedKeyFromClass(parentFieldId) {
+            const parentField = document.getElementById(parentFieldId);
+            const labelClass = Array.from(parentField.classList).find(className =>
+                className.startsWith('sm-data__')
+            );
+        
+            if (labelClass) {
+                // if gForm classes are missing, this will break (ex 'sm-data__counselor-specialization')
+                const extractedKey = labelClass.replace('sm-data__', '').toLowerCase().split(' ').join('-');
+                return extractedKey;
+            }
+        
+            return '';
+        }
+
+        function updateSelectedFilters() {
+            selectedFilters.length = 0; // Clear the array
+        
+            for (const key in fieldSelectors) {
+                if (fieldSelectors.hasOwnProperty(key)) {
+                    const selectField = formSelector.querySelector(fieldSelectors[key]);
+        
+                    if (selectField) {
+                        const selectedOption = selectField.querySelector(`option[value="${selectField.value}"]`);
+                        const selectedLabel = selectedOption ? selectedOption.textContent : '';
+        
+                        // Check if selectedLabel is not empty and doesn't start with '— select a'
+                        if (selectedLabel && !selectedLabel.toLowerCase().startsWith('— select a')) {
+                            const parentFieldId = getParentFieldId(selectField);
+                            const extractedKey = getExtractedKeyFromClass(parentFieldId);
+        
+                            // Push the extracted data to the selectedFilters array
+                            selectedFilters.push({
+                                label: extractedKey,
+                                value: selectField.value,
+                            });
+                        }
+                    }
+                }
+            }
+        
+            console.log(`🐝🗝️ | Selected Filters:`);
+            console.log(selectedFilters);
+        }
+        
+    
+        // Initial update of selected filters
+        updateSelectedFilters();
+    }
+
+    updateFilters();
+
+    function updatePageResults() {
+        // Get the resultsSelector element
+        const resultsSelector = document.querySelector('.sm--counselor-query-block');
+
+        // Block Wrapper Classes (not items)
+        const blockLayoutClasses = 'columns-3 wp-block-post-template has-base-font-size is-layout-grid wp-container-24 wp-block-post-template-is-layout-grid';
+
+        if (resultsSelector) {
+
+            // Update the target element with the generated content
+            resultsSelector.innerHTML = `
+                <ul class="${blockLayoutClasses}">${markup}</ul>
+            `;
+
+            // After a short delay, remove the 'fade' class to fade in the new content
+            setTimeout(() => {
+                resultsSelector.classList.remove('fade');
+            }, 200);
+        }
+    }
+    
+    // THIS IS OLD (below)
+    
+
+
+    // const selectedFilters = [];
 
     function setupAjaxFormSubmission(formSelector, displaySelector) {
         const form = document.querySelector(formSelector);
@@ -115,7 +268,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (selectedCountyNorthCarolina) selectedFilters.push(selectedCountyNorthCarolina);
             if (selectedSchoolTennessee) selectedFilters.push(selectedSchoolTennessee);
         
-            console.log('Biki Filters: ', selectedFilters);
+            // console.log('Biki Filters: ', selectedFilters);
 
             document.querySelector('.sm--counselor-query-block').classList.add('fade');
             
@@ -195,7 +348,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const markup = generateMarkupFromJSON(jsonData);
 
                     // Log the result count to the console
-                    console.log(`${jsonData.length} results found. ${apiURL}`);
+                    // console.log(`${jsonData.length} results found. ${apiURL}`);
 
                     // Get the resultsSelector element
                     const resultsSelector = document.querySelector('.sm--counselor-query-block');
