@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // input_{form_id}_{field_id}
-        const specializationField = form.querySelector('#input_3_15');
+        const specializationField = form.querySelector('#input_3_16');
         const stateField = form.querySelector('#input_3_8');
         const countryField = form.querySelector('#input_3_9');
         const countyFieldTennessee = form.querySelector('#input_3_10');
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const countyFieldNorthCarolina = form.querySelector('#input_3_12');
         const countyFieldCalifornia = form.querySelector('#input_3_13');
         const countyFieldGeorgia = form.querySelector('#input_3_14');
-        const schoolFieldTennessee = form.querySelector('#input_3_16');
+        const schoolFieldTennessee = form.querySelector('#input_3_18');
 
         // Top-level selections clear child selections when changed
         specializationField.addEventListener('change', () => {
@@ -258,7 +258,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
 
     function generateACFMarkup(combinedData) {
-        const counselorSlateUrl = combinedData.counselor_slate_url ? '' : '/contact-us/';
+        const counselorSlateUrl = combinedData.counselor_slate_url ? combinedData.counselor_slate_url : '/contact-us/';
 
         // Defines the field data + markup, but not the order in which they are presented (see fieldOrder)
         const fieldRenderers = {
