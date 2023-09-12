@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const apiUrl = '/wp-json/wp/v2/counselor?per_page=50';
     let localCounselorData = [];
     const selectedFilters = [];
+    let filteredData = [];
     
     function updateData() {
         fetch(apiUrl)
@@ -34,6 +35,48 @@ document.addEventListener('DOMContentLoaded', function () {
     // Periodically update data (twice a day) BIKI: activate this after main production concludes
     // setInterval(updateData, 12 * 60 * 60 * 1000); // 12 hours
     updateData();
+
+    function updateFilteredData() {
+        // Clear the existing filteredData array
+        filteredData.length = 0;
+    
+        // Iterate through localCounselorData and filter based on selectedFilters
+        for (const counselor of localCounselorData) {
+            let matchesAllFilters = true;
+
+            console.log('COUNSELOR');
+            console.log(counselor);
+            
+            for (const filter of selectedFilters) {
+                
+                console.log('FILTER');
+                console.log(filter);
+                
+                // Check if the counselor has the filter category
+                if (!counselor[filter.label]) {
+                    console.log(`Counselor does not have category ${filter.label}`);
+                    matchesAllFilters = false;
+                    break; // No need to continue checking other filters for this counselor
+                }
+    
+                // Check if the value matches
+                if (counselor[filter.label] !== filter.value) {
+                    console.log(`Counselor ${counselor[filter.label]} does not match value ${filter.value} for category ${filter.label}`);
+                    matchesAllFilters = false;
+                    break; // No need to continue checking other filters for this counselor
+                }
+            }
+    
+            // If the counselor matches all selected filters, add it to filteredData
+            if (matchesAllFilters) {
+                filteredData.push(counselor);
+            }
+        }
+    
+        console.log(`🐝🗝️ | Filtered Data:`);
+        console.log(filteredData);
+    }
+    
 
     function updateFilters() {
         const gravityFormID = 3;
@@ -122,7 +165,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 }
             }
-        
+            
+            updateFilteredData();
+
             console.log(`🐝🗝️ | Selected Filters:`);
             console.log(selectedFilters);
         }
@@ -134,26 +179,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
     updateFilters();
 
-    function updatePageResults() {
-        // Get the resultsSelector element
-        const resultsSelector = document.querySelector('.sm--counselor-query-block');
 
-        // Block Wrapper Classes (not items)
-        const blockLayoutClasses = 'columns-3 wp-block-post-template has-base-font-size is-layout-grid wp-container-24 wp-block-post-template-is-layout-grid';
 
-        if (resultsSelector) {
+    // function updatePageResults() {
+    //     // Get the resultsSelector element
+    //     const resultsSelector = document.querySelector('.sm--counselor-query-block');
 
-            // Update the target element with the generated content
-            resultsSelector.innerHTML = `
-                <ul class="${blockLayoutClasses}">${markup}</ul>
-            `;
+    //     // Block Wrapper Classes (not items)
+    //     const blockLayoutClasses = 'columns-3 wp-block-post-template has-base-font-size is-layout-grid wp-container-24 wp-block-post-template-is-layout-grid';
 
-            // After a short delay, remove the 'fade' class to fade in the new content
-            setTimeout(() => {
-                resultsSelector.classList.remove('fade');
-            }, 200);
-        }
-    }
+    //     if (resultsSelector) {
+
+    //         // Update the target element with the generated content
+    //         resultsSelector.innerHTML = `
+    //             <ul class="${blockLayoutClasses}">${markup}</ul>
+    //         `;
+
+    //         // After a short delay, remove the 'fade' class to fade in the new content
+    //         setTimeout(() => {
+    //             resultsSelector.classList.remove('fade');
+    //         }, 200);
+    //     }
+    // }
+    
     
     // THIS IS OLD (below)
     
