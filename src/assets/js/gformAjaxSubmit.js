@@ -88,7 +88,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Display the markup where you want on your page
         const resultsContainer = document.querySelector('.sm--counselor-query-block');
-        resultsContainer.innerHTML = markup;
+        
+        setTimeout(() => {
+            resultsContainer.innerHTML = markup;
+        }, 400);
     
         // console.log(`🐝🗝️ | Filtered Data:`);
         // console.log(filteredData);
@@ -157,8 +160,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         function updateSelectedFilters() {
+            
             selectedFilters.length = 0; // Clear the array
-        
+
             for (const key in fieldSelectors) {
                 if (fieldSelectors.hasOwnProperty(key)) {
                     const selectField = formSelector.querySelector(fieldSelectors[key]);
@@ -222,6 +226,7 @@ document.addEventListener('DOMContentLoaded', function () {
             );
 
             updateSelectedFilters();
+            resultsSelector.classList.add('fade');
         });
 
         statesField.addEventListener('change', () => {
@@ -274,10 +279,8 @@ document.addEventListener('DOMContentLoaded', function () {
             // Get the resultsSelector element
             const resultsSelector = document.querySelector('.sm--counselor-query-block');
     
-            resultsSelector.classList.add('fade');
-
             // Block Wrapper Classes (not items)
-            const blockLayoutClasses = 'columns-3 wp-block-post-template has-base-font-size is-layout-grid wp-container-24 wp-block-post-template-is-layout-grid';
+            const blockLayoutClasses = 'counselor-loop__ul columns-3 wp-block-post-template has-base-font-size is-layout-grid wp-container-24 wp-block-post-template-is-layout-grid';
     
             if (resultsSelector) {
                 // Loop through the data and generate markup
@@ -286,8 +289,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     let acfData = item.acf;
 
                     acfData.title = title;
-    
-                    // Generate markup for ACF fields
+
                     const acfMarkup = generateACFMarkup(acfData);
                     const blockQueryClasses = 'wp-block-query is-layout-flow wp-block-query-is-layout-flow';
     
@@ -296,29 +298,19 @@ document.addEventListener('DOMContentLoaded', function () {
                         markup += `<div class="${blockQueryClasses} counselor-loop__counselor-block">${acfMarkup}</div>`;
                     }
                 });
-    
-                // BIKI START HERE
-
-                // Because we've sped up this filter so much, it's outpacing Gutenberg's calling of classes
-                // So i think we should make our own maybe? I think it's worth it, fuck Gutenberg's janky bs
-                // Also, this animation doesn't work well yet
-                
-                // Add the "fade" class with a slight delay to ensure it takes effect
+                                
                 setTimeout(() => {
-
-                    // Use requestAnimationFrame to schedule the content update
-                    requestAnimationFrame(() => {
-                        // Update the target element with the generated content
-                        resultsSelector.innerHTML = `
-                            <ul class="biki-debug ${blockLayoutClasses}">${markup}</ul>
-                        `;
-
-                        // After a short delay, remove the 'fade' class to fade in the new content
-                        setTimeout(() => {
-                            resultsSelector.classList.remove('fade');
-                        }, 200);
-                    });
+                    // Remove the 'fade' class after a short delay
+                    resultsSelector.classList.remove('fade');
+                    
+                    // setTimeout(() => {
+                    // });
+                    // Update the target element with the generated content
+                    resultsSelector.innerHTML = `
+                        <ul class="${blockLayoutClasses}">${markup}</ul>
+                    `;
                 }, 600);
+
             } else {
                 // Display an error message if resultsSelector doesn't exist
                 console.error("Results cannot be displayed without the resultsSelector existing on the page");
