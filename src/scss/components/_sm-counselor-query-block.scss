@@ -1,5 +1,5 @@
 .sm--counselor-query-block {
-    // opacity: 1;
+    opacity: 1;
     transition: opacity 0.2s ease-out;
     
     .fade {
@@ -10,6 +10,7 @@
         display: flex;
         flex-wrap: wrap;
         flex-direction: row;
+        list-style-type: none;
     }
 
     .error-message {
@@ -19,7 +20,7 @@
     .counselor-loop {
         &__counselor-block {
             position: relative; // Needed to hoist anchor to wrap parent elements (see ::before below)
-            flex-basis: 30%;
+            flex-basis: clamp(300px, 30%, 100%);
 
             .wp-block-group {
                 padding-top:var(--wp--preset--spacing--x-small);
@@ -41,7 +42,17 @@
         }
 
         &__image {
+            max-height: 320px;
             overflow: hidden;
+
+            .wp-block-post-featured-image {
+                display: flex;
+                min-height: 320px;
+
+                img {
+                    object-fit:cover;
+                }
+            }
         }
 
         &__name {
