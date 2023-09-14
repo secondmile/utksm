@@ -160,6 +160,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         function updateSelectedFilters() {
+            // Fade results out
+            resultsSelector.classList.add('fade');
             
             selectedFilters.length = 0; // Clear the array
 
@@ -226,7 +228,6 @@ document.addEventListener('DOMContentLoaded', function () {
             );
 
             updateSelectedFilters();
-            resultsSelector.classList.add('fade');
         });
 
         statesField.addEventListener('change', () => {
@@ -273,8 +274,12 @@ document.addEventListener('DOMContentLoaded', function () {
         let markup = '';
     
         if (data.length === 0) {
+            setTimeout(() => {
+                resultsSelector.classList.remove('fade');
+            }, 500);
             // Display an error message if no counselors are found
             markup = '<p class="error-message">No counselors found for the selected criteria. Consider broadening your search or changing your filters.</p>';
+            //     // Remove the 'fade' class after a short delay
         } else {
             // Get the resultsSelector element
             const resultsSelector = document.querySelector('.sm--counselor-query-block');
@@ -303,13 +308,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     // Remove the 'fade' class after a short delay
                     resultsSelector.classList.remove('fade');
                     
-                    // setTimeout(() => {
-                    // });
                     // Update the target element with the generated content
                     resultsSelector.innerHTML = `
                         <ul class="${blockLayoutClasses}">${markup}</ul>
                     `;
-                }, 600);
+                }, 500);
 
             } else {
                 // Display an error message if resultsSelector doesn't exist
