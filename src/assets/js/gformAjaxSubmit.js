@@ -90,8 +90,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const resultsContainer = document.querySelector('.sm--counselor-query-block');
         resultsContainer.innerHTML = markup;
     
-        console.log(`🐝🗝️ | Filtered Data:`);
-        console.log(filteredData);
+        // console.log(`🐝🗝️ | Filtered Data:`);
+        // console.log(filteredData);
     }   
 
     function updateFilters() {
@@ -181,8 +181,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 }
             }
-            console.log(`🐝🗝️ | Selected Filters:`);
-            console.log(selectedFilters);
+            // console.log(`🐝🗝️ | Selected Filters:`);
+            // console.log(selectedFilters);
             
             updateFilteredData();
         }
@@ -274,18 +274,21 @@ document.addEventListener('DOMContentLoaded', function () {
             // Get the resultsSelector element
             const resultsSelector = document.querySelector('.sm--counselor-query-block');
     
+            resultsSelector.classList.add('fade');
+
             // Block Wrapper Classes (not items)
             const blockLayoutClasses = 'columns-3 wp-block-post-template has-base-font-size is-layout-grid wp-container-24 wp-block-post-template-is-layout-grid';
     
             if (resultsSelector) {
                 // Loop through the data and generate markup
                 data.forEach(item => {
-                    const title = item.title;
-                    const acfData = item.acf;
-                    const counselorSlateUrl = acfData.counselor_slate_url ? acfData.counselor_slate_url : '/contact-us/';
+                    const title = item.title.rendered;
+                    let acfData = item.acf;
+
+                    acfData.title = title;
     
                     // Generate markup for ACF fields
-                    const acfMarkup = generateACFMarkupz(acfData, counselorSlateUrl);
+                    const acfMarkup = generateACFMarkup(acfData);
                     const blockQueryClasses = 'wp-block-query is-layout-flow wp-block-query-is-layout-flow';
     
                     if (acfMarkup !== '') {
@@ -299,11 +302,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Because we've sped up this filter so much, it's outpacing Gutenberg's calling of classes
                 // So i think we should make our own maybe? I think it's worth it, fuck Gutenberg's janky bs
                 // Also, this animation doesn't work well yet
-                // Also there's some data disconnected
                 
                 // Add the "fade" class with a slight delay to ensure it takes effect
                 setTimeout(() => {
-                    resultsSelector.classList.add('fade');
 
                     // Use requestAnimationFrame to schedule the content update
                     requestAnimationFrame(() => {
@@ -315,9 +316,9 @@ document.addEventListener('DOMContentLoaded', function () {
                         // After a short delay, remove the 'fade' class to fade in the new content
                         setTimeout(() => {
                             resultsSelector.classList.remove('fade');
-                        }, 0); // You can set this to 0 or adjust as needed
+                        }, 200);
                     });
-                }, 200);
+                }, 600);
             } else {
                 // Display an error message if resultsSelector doesn't exist
                 console.error("Results cannot be displayed without the resultsSelector existing on the page");
@@ -327,7 +328,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return markup;
     }
     
-    function generateACFMarkupz(combinedData) {
+    function generateACFMarkup(combinedData) {
         const counselorSlateUrl = combinedData.counselor_slate_url ? combinedData.counselor_slate_url : '/contact-us/';
 
         // Defines the field data + markup, but not the order in which they are presented (see fieldOrder)
@@ -343,11 +344,6 @@ document.addEventListener('DOMContentLoaded', function () {
             // These work but exceed scope of current design
             // 'counselor_county': fieldValue => `<div class="counselor-loop__county"><strong>counselor_county:</strong> ${fieldValue}</div>`,
             // 'counselor_schools': fieldValue => `<div class="counselor-loop__schools"><strong>counselor_schools:</strong> ${fieldValue}</div>`,
-            
-            // Commenting these out until taxonomy has been injected into the json object (like image); exceeds scope of current design
-            // 'counselor_country': fieldValue => generateTaxonomyMarkup('counselor-states', fieldValue), 
-            // 'counselor_states': fieldValue => generateTaxonomyMarkup('counselor-states', fieldValue),
-            // 'counselor_specialization': fieldValue => generateTaxonomyMarkup('counselor-specialization', fieldValue),
         };
 
         // Define the desired order of fields as they display on the page
