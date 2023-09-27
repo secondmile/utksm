@@ -9,6 +9,23 @@
 	display:none;
 }
 
+.sm--flex-wrap {
+	flex-wrap: wrap!important;
+}
+
+.sm--flex-basis--500 {
+	flex: 1;
+    min-width: 500px;
+}
+
+.sm--flex-basis--full {
+	flex-basis: 100%;
+}
+
+.sm--margin-center {
+	margin: 0 auto!important;
+}
+
 .z-index--behind {
 	position: relative;
 	z-index: 1;
