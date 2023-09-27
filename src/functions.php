@@ -128,3 +128,11 @@ add_filter( 'gform_submit_button_3', '__return_empty_string' );
 add_filter('perfmatters_lazyload_youtube_thumbnail_resolution', function($resolution) {
     return 'sddefault';
 });
+
+function counselor_post_template($template) {
+    if (is_singular('counselors')) {
+        $template = get_template_directory() . '/templates/single-counselor.php';
+    }
+    return $template;
+}
+add_filter('template_include', 'counselor_post_template');
