@@ -75,6 +75,7 @@ $fields = get_acf_fields_by_type($post_id);
     $counselor_image_width = $fields['array']['counselor_image']['sizes']['large-width'];
     $counselor_states = get_term_names_as_list($fields['array']['counselor_states']);
     $counselor_specialization = get_term_names_as_list($fields['array']['counselor_specialization']);
+    $counselor_misc = $fields['string']['counselor_misc'];
     
     $counties_in_tennessee = !empty($fields['array']['counties-in-tennessee']) ? get_term_names_as_list($fields['array']['counties-in-tennessee']) : '';
     $counties_in_california = !empty($fields['array']['counties-in-california']) ? get_term_names_as_list($fields['array']['counties-in-california']) : '';
@@ -95,17 +96,17 @@ $fields = get_acf_fields_by_type($post_id);
 ?>
 <!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|large","bottom":"var:preset|spacing|large","left":"var:preset|spacing|small","right":"var:preset|spacing|small"},"margin":{"top":"0","bottom":"0"}}},"className":"background-texture__excitement","layout":{"type":"default"}} -->
 <div class="wp-block-group alignfull background-texture__excitement" style="margin-top:0;margin-bottom:0;padding-top:var(--wp--preset--spacing--large);padding-right:var(--wp--preset--spacing--small);padding-bottom:var(--wp--preset--spacing--large);padding-left:var(--wp--preset--spacing--small)"><!-- wp:group {"style":{"spacing":{"padding":{"bottom":"0","left":"0","right":"0"}}},"layout":{"type":"constrained","wideSize":"1500px"}} -->
-<div class="wp-block-group" style="padding-right:0;padding-bottom:0;padding-left:0"><!-- wp:columns {"verticalAlignment":"center","align":"wide","style":{"spacing":{"padding":{"right":"0","left":"0"},"blockGap":{"left":"var:preset|spacing|large"}}},"className":"is-style-columns-reverse"} -->
-<div class="wp-block-columns alignwide are-vertically-aligned-center is-style-columns-reverse" style="padding-right:0;padding-left:0"><!-- wp:column {"verticalAlignment":"center","width":"50%","style":{"spacing":{"padding":{"top":"0","right":"0","bottom":"0","left":"0"}}},"layout":{"type":"default"}} -->
-<div class="wp-block-column is-vertically-aligned-center" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0;flex-basis:50%"><!-- wp:image {"align":"full","id":2273,"aspectRatio":"1","scale":"cover","sizeSlug":"full","linkDestination":"none","className":"box-shadow__top-right\u002d\u002dlarge"} -->
+<div class="wp-block-group" style="padding-right:0;padding-bottom:0;padding-left:0"><!-- wp:columns {"verticalAlignment":"center","align":"wide","style":{"spacing":{"padding":{"right":"0","left":"0"},"blockGap":{"left":"var:preset|spacing|large"}}}} -->
+<div class="wp-block-columns alignwide are-vertically-aligned-center" style="padding-right:0;padding-left:0"><!-- wp:column {"verticalAlignment":"center","width":"50%","style":{"spacing":{"padding":{"top":"0","right":"0","bottom":"0","left":"0"}}},"layout":{"type":"default"}} -->
+<div class="wp-block-column is-vertically-aligned-center" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0;flex-basis:40%"><!-- wp:image {"align":"full","id":2273,"aspectRatio":"1","scale":"cover","sizeSlug":"full","linkDestination":"none","className":"box-shadow__top-right\u002d\u002dlarge"} -->
 <figure class="wp-block-image alignfull size-full box-shadow__top-right--large"><img src="<?= $counselor_image; ?>" alt="" class="" width="<?= $counselor_image_width; ?>" height="<?= $counselor_image_height; ?>" style="aspect-ratio:1;object-fit:cover"/></figure>
 <!-- /wp:image --></div>
 <!-- /wp:column -->
 
-<!-- wp:column {"verticalAlignment":"center","width":"50%","style":{"spacing":{"padding":{"top":"var:preset|spacing|medium","bottom":"var:preset|spacing|medium","left":"var:preset|spacing|medium","right":"var:preset|spacing|medium"}}},"backgroundColor":"light"} -->
-<div class="wp-block-column is-vertically-aligned-center has-light-background-color has-background" style="padding-top:var(--wp--preset--spacing--medium);padding-right:var(--wp--preset--spacing--medium);padding-bottom:var(--wp--preset--spacing--medium);padding-left:var(--wp--preset--spacing--medium);flex-basis:50%"><!-- wp:group {"layout":{"type":"constrained","wideSize":"","justifyContent":"left"}} -->
+<!-- wp:column {"verticalAlignment":"center","width":"60%","style":{"spacing":{"padding":{"top":"var:preset|spacing|medium","bottom":"var:preset|spacing|medium","left":"var:preset|spacing|medium","right":"var:preset|spacing|medium"}}},"backgroundColor":"light"} -->
+<div class="wp-block-column is-vertically-aligned-center has-light-background-color has-background" style="padding-top:var(--wp--preset--spacing--medium);padding-right:var(--wp--preset--spacing--medium);padding-bottom:var(--wp--preset--spacing--medium);padding-left:var(--wp--preset--spacing--medium);flex-basis:60%"><!-- wp:group {"layout":{"type":"constrained","wideSize":"","justifyContent":"left"}} -->
 <div class="wp-block-group"><!-- wp:heading {"textAlign":"left","style":{"spacing":{"margin":{"bottom":"0px"}}},"className":"wp-block-heading"} -->
-<h2 class="wp-block-heading has-text-align-left" style="margin-bottom:0px"><?= get_the_title($post_id); ?></h2>
+<h1 class="is-larger-text wp-block-heading has-text-align-left" style="margin-bottom:0px"><?= get_the_title($post_id); ?></h1>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"textColor":"smokey","fontSize":"small"} -->
@@ -113,12 +114,8 @@ $fields = get_acf_fields_by_type($post_id);
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph {"align":"left","className":"is-style-utkwds-fancy-link","fontSize":"normal"} -->
-<p class="has-text-align-left is-style-utkwds-fancy-link has-normal-font-size">[make this when db overlap isn't an issue, biki] Freeform content they can add as they want, including copy and links.<br><br><a href="https://utk-admissions.local/why-ut/undergraduate-academics/">Custom Link via WYSIWYG</a></p>
+<p class="has-text-align-left is-style-utkwds-fancy-link has-normal-font-size"><?= $counselor_misc; ?></p>
 <!-- /wp:paragraph -->
-
-<!-- wp:paragraph {"align":"left","className":"is-style-utkwds-fancy-link","fontSize":"normal"} -->
-<p class="has-text-align-left is-style-utkwds-fancy-link has-normal-font-size"><a href="https://utk-admissions.local/why-ut/undergraduate-programs-majors/">Another Link</a></p>
-<!-- /wp:paragraph --></div>
 <!-- /wp:group --></div>
 <!-- /wp:column --></div>
 <!-- /wp:columns --></div>
