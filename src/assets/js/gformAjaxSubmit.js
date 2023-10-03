@@ -111,7 +111,9 @@ document.addEventListener('DOMContentLoaded', function () {
             'counties-in-north-carolina': 12,
             'counties-in-california': 13,
             'counties-in-georgia': 14,
-            'schools-in-tennessee': 18,
+            'schools-knox': 18,
+            'schools-blount': 19,
+            'schools-hamilton': 20,
         }
 
         const fieldSelectors = {};
@@ -208,11 +210,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const statesField = formSelector.querySelector(fieldSelectors.states);
         const countriesField = formSelector.querySelector(fieldSelectors.countries);
         const countiesInTennesseeField = formSelector.querySelector(fieldSelectors['counties-in-tennessee']);
-        const schoolsInTennesseeField = formSelector.querySelector(fieldSelectors['schools-in-tennessee']);
         const countiesInTexasField = formSelector.querySelector(fieldSelectors['counties-in-texax']);
         const countiesInNorthCarolinaField = formSelector.querySelector(fieldSelectors['counties-in-north-carolina']);
         const countiesInCaliforniaField = formSelector.querySelector(fieldSelectors['counties-in-california']);
         const countiesInGeorgiaField = formSelector.querySelector(fieldSelectors['counties-in-georgia']);
+        const schoolsInKnoxField = formSelector.querySelector(fieldSelectors['schools-knox']);
+        const schoolsInBlountField = formSelector.querySelector(fieldSelectors['schools-blount']);
+        const schoolsInHamiltonField = formSelector.querySelector(fieldSelectors['schools-hamilton']);
 
         // Top-level selections clear child selections when changed
         specializationField.addEventListener('change', () => {
@@ -224,7 +228,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 countiesInTexasField,
                 countiesInGeorgiaField,
                 countiesInNorthCarolinaField,
-                schoolsInTennesseeField
+                schoolsInKnoxField,
+                schoolsInBlountField,
+                schoolsInHamiltonField,
             );
 
             updateSelectedFilters();
@@ -238,7 +244,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 countiesInTexasField,
                 countiesInGeorgiaField,
                 countiesInNorthCarolinaField,
-                schoolsInTennesseeField
+                schoolsInKnoxField,
+                schoolsInBlountField,
+                schoolsInHamiltonField,
             );
 
             updateSelectedFilters();
@@ -252,21 +260,33 @@ document.addEventListener('DOMContentLoaded', function () {
                 countiesInTexasField,
                 countiesInGeorgiaField,
                 countiesInNorthCarolinaField,
-                schoolsInTennesseeField
+                schoolsInKnoxField,
+                schoolsInBlountField,
+                schoolsInHamiltonField,
             );
 
             updateSelectedFilters();
         });
 
-        // Create an "or" condition for these State-specific filters
         countiesInTennesseeField.addEventListener('change', () => {
-            clearFields(schoolsInTennesseeField);
+            clearFields(
+                schoolsInKnoxField,
+                schoolsInBlountField,
+                schoolsInHamiltonField,
+            );
+
             updateSelectedFilters();
         });
-        schoolsInTennesseeField.addEventListener('change', () => {
-            clearFields(countiesInTennesseeField);
-            updateSelectedFilters();
-        });
+
+        // // Create an "or" condition for these State-specific filters
+        // countiesInTennesseeField.addEventListener('change', () => {
+        //     clearFields(schoolsInKnoxField);
+        //     updateSelectedFilters();
+        // });
+        // schoolsInKnoxField.addEventListener('change', () => {
+        //     clearFields(countiesInTennesseeField);
+        //     updateSelectedFilters();
+        // });
     }
 
     function generateMarkupFromData(data) {
