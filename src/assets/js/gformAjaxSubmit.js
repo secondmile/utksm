@@ -114,6 +114,7 @@ document.addEventListener('DOMContentLoaded', function () {
             'schools-knox': 18,
             'schools-blount': 19,
             'schools-hamilton': 20,
+            'schools-middle-tennessee': 21,
         }
 
         const fieldSelectors = {};
@@ -217,6 +218,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const schoolsInKnoxField = formSelector.querySelector(fieldSelectors['schools-knox']);
         const schoolsInBlountField = formSelector.querySelector(fieldSelectors['schools-blount']);
         const schoolsInHamiltonField = formSelector.querySelector(fieldSelectors['schools-hamilton']);
+        const schoolsInMiddleTennesseeField = formSelector.querySelector(fieldSelectors['schools-middle-tennessee']);
 
         // Top-level selections clear child selections when changed
         specializationField.addEventListener('change', () => {
@@ -231,6 +233,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 schoolsInKnoxField,
                 schoolsInBlountField,
                 schoolsInHamiltonField,
+                schoolsInMiddleTennesseeField,
             );
 
             updateSelectedFilters();
@@ -247,6 +250,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 schoolsInKnoxField,
                 schoolsInBlountField,
                 schoolsInHamiltonField,
+                schoolsInMiddleTennesseeField,
             );
 
             updateSelectedFilters();
@@ -263,6 +267,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 schoolsInKnoxField,
                 schoolsInBlountField,
                 schoolsInHamiltonField,
+                schoolsInMiddleTennesseeField,
             );
 
             updateSelectedFilters();
@@ -273,6 +278,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 schoolsInKnoxField,
                 schoolsInBlountField,
                 schoolsInHamiltonField,
+                schoolsInMiddleTennesseeField,
             );
 
             updateSelectedFilters();
