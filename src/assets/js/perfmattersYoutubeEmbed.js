@@ -1,5 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
+    // Simulates lightbox via CSS while utilizing perfmatters YouTube facade loading
+
     const perfmattersLazyYouTubes = document.querySelectorAll('.perfmatters-lazy-youtube');
+    const coverZIndexElements = document.querySelectorAll('.wp-block-cover__inner-container');
 
     if (perfmattersLazyYouTubes.length > 0) {
         const lightboxOverlay = document.createElement('div');
@@ -25,6 +28,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 perfmattersLazyYouTube.style.height = '80%';
                 perfmattersLazyYouTube.style.left = 'calc(50% - (80% / 2))';
 
+                // Remove z-index for Cover Elements while lightbox is open (or they fight and the lightbox loses)
+                coverZIndexElements.forEach(function (element) {
+                    element.style.zIndex = 'unset';
+                });
+
                 lightboxOverlay.style.display = 'block';
                 document.body.style.overflow = 'hidden';
             });
@@ -38,6 +46,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 perfmattersLazyYouTube.style.top = '';
                 perfmattersLazyYouTube.style.height = '';
                 perfmattersLazyYouTube.style.left = '';
+
+                // Restore default z-indexes to cover content
+                coverZIndexElements.forEach(function (element) {
+                    element.style.zIndex = '1';
+                });
             });
             lightboxOverlay.style.display = 'none';
             document.body.style.overflow = 'auto';
