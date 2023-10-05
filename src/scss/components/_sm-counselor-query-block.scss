@@ -105,6 +105,7 @@ select {
     background-repeat: no-repeat;
     background-position: right 16px center;
     background-size: 16px 16px;
+    margin-left: 0!important; // To correct 3rd party inline formatting weirdness
 
     &:hover {
         cursor: pointer;
