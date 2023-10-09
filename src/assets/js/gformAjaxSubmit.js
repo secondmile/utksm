@@ -115,6 +115,7 @@ document.addEventListener('DOMContentLoaded', function () {
             'schools-blount': 19,
             'schools-hamilton': 20,
             'schools-middle-tennessee': 21,
+            'schools-middle-tennessee': 22,
         }
 
         const fieldSelectors = {};
@@ -218,6 +219,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const schoolsInKnoxField = formSelector.querySelector(fieldSelectors['schools-knox']);
         const schoolsInBlountField = formSelector.querySelector(fieldSelectors['schools-blount']);
         const schoolsInHamiltonField = formSelector.querySelector(fieldSelectors['schools-hamilton']);
+        const schoolsInShelbyField = formSelector.querySelector(fieldSelectors['schools-shelby']);
         const schoolsInMiddleTennesseeField = formSelector.querySelector(fieldSelectors['schools-middle-tennessee']);
 
         // Top-level selections clear child selections when changed
@@ -233,6 +235,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 schoolsInKnoxField,
                 schoolsInBlountField,
                 schoolsInHamiltonField,
+                schoolsInShelbyField,
                 schoolsInMiddleTennesseeField,
             );
 
@@ -250,6 +253,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 schoolsInKnoxField,
                 schoolsInBlountField,
                 schoolsInHamiltonField,
+                schoolsInShelbyField,
                 schoolsInMiddleTennesseeField,
             );
 
@@ -267,6 +271,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 schoolsInKnoxField,
                 schoolsInBlountField,
                 schoolsInHamiltonField,
+                schoolsInShelbyField,
                 schoolsInMiddleTennesseeField,
             );
 
@@ -278,6 +283,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 schoolsInKnoxField,
                 schoolsInBlountField,
                 schoolsInHamiltonField,
+                schoolsInShelbyField,
                 schoolsInMiddleTennesseeField,
             );
 
