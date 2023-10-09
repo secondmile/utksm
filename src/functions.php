@@ -8,9 +8,8 @@
  * @link    https://utkwdswp.com/
  */
 
-// ----- Parent/Child Connection ----- //
+// ----- Register Child Stylesheet ----- //
 function enqueue_child_theme_styles() {
-    // Enqueue child theme styles
     wp_enqueue_style('child-style', get_stylesheet_uri(), '/style.css');
 }
 add_action('wp_enqueue_scripts', 'enqueue_child_theme_styles');
@@ -25,7 +24,7 @@ add_action('after_setup_theme', 'custom_image_sizes');
 // ----- Custom Gutenberg Blocks ----- //
 wp_register_style( 'sm-block-style',  get_stylesheet_directory_uri() .'/assets/css/blocks.css', array(), null, 'all' );
 
-// Registers the block
+// Text with double drop shadow, dark/light variation
 register_block_style(
 	'core/paragraph', array(
 	'name' => 'text-shadow--double',
@@ -40,13 +39,6 @@ register_block_style(
 	'label' => 'Fancy Light',
 	'style_handle' => 'sm-block-style',
 	'is_default' => false,
-));
-
-register_block_style(
-	'core/button', array(
-	'name' => 'sm--fancy-link',
-	'label' => __( 'Fancy Link', 'wp-rig' ),
-	'style_handle' => 'sm-block-style',
 ));
 
 // Connects JS (api) and css (style) to the new block
@@ -79,9 +71,6 @@ add_action( 'wp_enqueue_scripts', 'sm_custom_blocks' );
 // Enqueue the necessary scripts
 function enqueue_scripts() {
     wp_enqueue_script('jquery');
-    
-     // Enqueue ACF's core script for API access
-    //  wp_enqueue_script('acf');
 
      // Enqueue your custom script with ACF as a dependency
      wp_enqueue_script('gform-ajax-submit', get_stylesheet_directory_uri() . '/assets/js/gformAjaxSubmit.js', array('jquery', 'acf'), '1.0', true);
@@ -90,7 +79,6 @@ function enqueue_scripts() {
 add_action('wp_enqueue_scripts', 'enqueue_scripts');
 
 // Add custom API data for counselor post type (images, objects, taxonomies)
-// BIKI -- ref this for taxonomy later
 function modify_counselor_api_data($data, $post, $request) {
     if ($post->post_type === 'counselor') {
         $counselor_image_array = get_field('counselor_image', $data->data['id']);
@@ -115,8 +103,6 @@ function modify_counselor_api_data($data, $post, $request) {
     return $data;
 }
 
-
-// Apply the modification to "counselor" custom post type API during WordPress initialization
 add_action('init', function() {
     add_filter('rest_prepare_counselor', 'modify_counselor_api_data', 10, 3);
 });
@@ -124,11 +110,13 @@ add_action('init', function() {
 // Removes Gravity Form Submit Button
 add_filter( 'gform_submit_button_3', '__return_empty_string' );
 
+// ----- Perfmatters (youtube facade resolution) ----- //
 // Perfmatters Youtube Thumbnail image quality
 add_filter('perfmatters_lazyload_youtube_thumbnail_resolution', function($resolution) {
     return 'sddefault';
 });
 
+// ----- Counselor Single Page Template ----- //
 function counselor_post_template($template) {
     if (is_singular('counselors')) {
         $template = get_template_directory() . '/templates/single-counselor.php';

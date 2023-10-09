@@ -1,12 +1,6 @@
 console.log('BIKI: editor-functions.js script loaded');
 
 wp.domReady(function () {
-  // BIKI: This is now slated for destruction
-   wp.blocks.registerBlockStyle('core/button', {
-     name: 'sm--fancy-link',
-     label: 'Fancy Link',
-   });
- 
    wp.blocks.registerBlockStyle('core/paragraph', {
     name: 'utkwds-fancy-link',
     label: 'Fancy Link',
