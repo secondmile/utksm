@@ -1,0 +1,30 @@
+/* Posts */
+span.wp-block-post-terms__separator {
+    display: none;
+}
+
+.single-post .taxonomy-category.wp-block-post-terms a {
+    border: 1px solid #58595b;
+    border-radius: 0.3rem;
+    color: #707070;
+    text-decoration: none;
+    padding: 0.3rem 0.5rem;
+    background-color: #fff;
+    white-space: nowrap;
+    margin-right: 0.5rem;
+    font-size: var(--wp--preset--font-size--x-small);
+
+    &:hover {
+        background-color: #707070;
+        color: #fff;
+    }
+}
+
+
+/* Sticky Anchor Link Rows - Unstick on Mobile/Tablet */
+@media only screen and (max-width: 1130px) {
+    .is-position-sticky {
+        position: relative;
+        top: 0;
+    }
+}

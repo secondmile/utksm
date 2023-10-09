@@ -8,23 +8,25 @@ Template: utkwds
 Version: 1.0
 */
 
-// Utility & Layout
-
-// UT Components
-// @import 'scss/components/button';
-
-// @import 'scss/styles/background';
-// @import 'scss/styles/borders';
-// @import 'scss/styles/box-shadows';
-
-// UTKSM Overrides (tread lightly)
-// @import 'scss/styles/utksm-overrides';
-// @import 'scss/styles/utksm-plugin-overrides';
-
-// UT Regions
-// @import 'scss/regions/footers';
-
 // Second Mile
-@import 'scss/sm-temp-styles.scss';
-@import 'scss/components/sm-counselor-query-block.scss';
+@import 'scss/sm-global.scss';
+@import 'scss/styles/utkwds-overrides';
+@import 'scss/styles/utility';
+
+// Regions
+@import 'scss/regions/footer.scss';
+
+// Styles
+@import 'scss/styles/backgrounds';
+@import 'scss/styles/borders';
+@import 'scss/styles/tables';
+@import 'scss/styles/typography';
+
+// Components
+@import 'scss/components/cover.scss';
+@import 'scss/components/divider.scss';
+@import 'scss/components/hero.scss';
 @import 'scss/components/perfmatters-youtube-embed.scss';
+@import 'scss/components/sm-counselor-query-block.scss';
+@import 'scss/components/stats.scss';
+

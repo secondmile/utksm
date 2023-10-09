@@ -1,0 +1,55 @@
+/* Borders */
+$border-sizes: (
+  small: 4px,
+  medium: 10px,
+  xlarge: 80px
+);
+
+$border-directions: (top, right, bottom, left);
+
+@each $size, $width in $border-sizes {
+  @each $direction in $border-directions {
+    .border-#{$direction}--#{$size} {
+      border-#{$direction}: #{$width} solid var(--wp--preset--color--orange);
+    }
+  }
+}
+
+
+/* Box Shadow */
+$box-shadow-sizes: (
+  large: 20px,
+  medium: 10px
+);
+
+$box-shadow-directions: (
+  top-left, top-right, bottom-right, bottom-left
+);
+
+@each $size, $offset in $box-shadow-sizes {
+  @each $direction in $box-shadow-directions {
+    .box-shadow__#{$direction}--#{$size} {
+      $x-offset: if($direction == "top-right" or $direction == "bottom-right", $offset, -$offset);
+      $y-offset: if($direction == "bottom-left" or $direction == "bottom-right", $offset, -$offset);
+      box-shadow: #{$x-offset} #{$y-offset} 0 0 var(--wp--preset--color--orange);
+    }
+  }
+}
+
+/* Border */
+.has-border-primary {
+	border: 1px solid var(--wp--preset--color--orange);
+}
+
+.has-border-radius {
+	border-radius: 5px;
+}
+
+/* Images */
+.image-offset--50 {
+	overflow: hidden;
+}
+
+.image-offset--50 > img {
+	left: 50% !important; /* warning: overrides grid */
+}
