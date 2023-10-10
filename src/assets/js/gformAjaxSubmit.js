@@ -93,8 +93,8 @@ document.addEventListener('DOMContentLoaded', function () {
             resultsContainer.innerHTML = markup;
         }, 400);
     
-        // console.log(`🐝🗝️ | Filtered Data:`);
-        // console.log(filteredData);
+        console.log(`🐝🗝️ | Filtered Data:`);
+        console.log(filteredData);
     }   
 
     function updateFilters() {
@@ -305,8 +305,14 @@ document.addEventListener('DOMContentLoaded', function () {
             }, 500);
             // Display an error message if no counselors are found
             markup = '<p class="error-message">No counselors found for the selected criteria. Consider broadening your search or changing your filters.</p>';
-            //     // Remove the 'fade' class after a short delay
-        } else {
+        } else if(data.length > 1) {
+            // If there is more than one result, guide the user to keep making selections
+            setTimeout(() => {
+                resultsSelector.classList.remove('fade');
+            }, 500);
+            markup = '<p class="error-message">Please continue selecting options to find the best counselor to best help you.</p>';
+        } 
+        else {
             // Get the resultsSelector element
             const resultsSelector = document.querySelector('.sm--counselor-query-block');
     
