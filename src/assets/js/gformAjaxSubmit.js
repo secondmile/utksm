@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 // console.log(`🐝🗝️ | API URL: ${apiUrl}`);
                 // console.log(`🐝🗝️ | Stored Data: ${localCounselorData.length} Results`);
                 // console.log(localCounselorData);
-                console.log('Counselor Filter: API Data Call')
+                // console.log('Counselor Filter: API Data Call')
 
                 updateFilters();
             })
@@ -93,8 +93,8 @@ document.addEventListener('DOMContentLoaded', function () {
             resultsContainer.innerHTML = markup;
         }, 400);
     
-        console.log(`🐝🗝️ | Filtered Data:`);
-        console.log(filteredData);
+        // console.log(`🐝🗝️ | Filtered Data:`);
+        // console.log(filteredData);
     }   
 
     function updateFilters() {
