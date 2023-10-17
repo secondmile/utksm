@@ -1,0 +1,38 @@
+/* Fix WDS Font Weight on Headings */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 900 !important;
+}
+
+/* Fancy Links on Dark - Fix */
+.has-white-color.is-style-utkwds-fancy-link > a {
+    color: var(--wp--preset--color--white);
+}
+
+/* Preheadings */
+.preheading {
+    letter-spacing: .26rem;
+    margin-bottom: 0;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-style: italic!important;
+    line-height: 1.75rem;
+    color: #918e8e;
+    margin-top: 2rem;
+    display: inline-block;
+}
+.preheading.has-text-color-white {
+    color: #ffffff;
+}
+
+/* No Text Decoration */
+.wp-block-heading a {
+    text-decoration: none;
+}
+
+ul.wp-block-categories-list.wp-block-categories {
+    list-style-type: none;
+
+    li.cat-item {
+        margin-left: 0;
+    }
+}

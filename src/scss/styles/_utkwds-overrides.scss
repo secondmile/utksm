@@ -1,0 +1,24 @@
+/* UTKWDS Parent Overrides
+--------------------------------------------------------------------------- */
+
+ul.utkwds-jump-link-list.sm-jump-link-list {
+	padding-bottom: 0;
+	border-bottom: 0;
+}
+
+/* UTKDS Plugin Overrides (comment reasoning/justification)
+--------------------------------------------------------------------------- */
+.wp-block-utk-wds-accordion-panel {
+	.utk-wds-accordion__heading {
+		// The default color for this is webfont "blue" assigned by a var --utk-accordion--panel-heading-text
+		// If more extensive changes occur, it makes sense to do this in its own file. So far this is the only deviation from the plugin
+		color: var(--wp--preset--color--smokey);
+	}
+}
+
+/* Fix WDS Margin on Last Block Before Footer */
+.wp-block-post-content > *:last-child, 
+.wp-block-post-content > *:last-child, 
+.wp-block-post-content > .has-white-background-color:last-child {
+    margin-bottom: 0 !important;
+}

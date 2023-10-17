@@ -1,0 +1,8 @@
+/* Pattern - Cover Block with Overlap CTA */
+.cover-block-with-overlap-cta > .wp-block-cover__inner-container  {
+    position: absolute;
+    bottom: 0;
+    padding-right: var(--wp--preset--spacing--small);
+    padding-bottom: 0;
+    padding-left: var(--wp--preset--spacing--small);
+}

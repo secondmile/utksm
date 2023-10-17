@@ -1,0 +1,20 @@
+/* Tables */
+.wp-block-table.has-light-borders thead tr th,
+.wp-block-table.has-light-borders thead tr {
+    border: none !important;
+}
+.wp-block-table.has-light-borders thead tr th {
+    font-size: var(--wp--preset--font-size--small) !important;
+}
+
+.wp-block-table.has-light-borders tbody td {
+    line-height: 1.75rem;
+}
+.wp-block-table.has-light-borders tr {
+    border: 0;
+    border-top: 1px solid var(--wp--preset--color--gray-2);
+    border-bottom: 1px solid var(--wp--preset--color--gray-2);
+}
+.wp-block-table.has-light-borders td {
+    border: 0;
+}

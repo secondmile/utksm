@@ -1,0 +1,22 @@
+/* Footer
+---------------------------------------------------------------------------- */
+.site-footer {
+	overflow-x: hidden;
+
+	// UTKSM + UTKWDS Footers were developed in parallel (unbeknownst) and there's a small conflict. This patches it.
+	&::before {
+		display: none!important;
+	}
+}
+
+// Pre-footer element margin-bottom injected via _fixes.scss
+//		.wp-block-post-content > *:last-child,
+// 		.wp-block-post-content > .has-white-background-color:last-child { ... }
+#prefooter {
+	margin-bottom: 0 !important;
+}
+
+#utk_footer_logo {
+    max-width: 300px;
+    margin-bottom: 2rem;
+}

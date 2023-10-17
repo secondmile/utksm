@@ -1,0 +1,97 @@
+$textures: (
+	excitement: url('assets/images/texture-ut-excitement.jpg')
+);
+
+@each $key, $value in $textures {
+	.background-texture__#{$key} {
+		background-image: $value;
+		background-size: cover;
+		background-position: center center;
+	}
+}
+
+// Patterns like dots that contain unique alignment and follow a single repeating axis
+// note: transforms effect content, so I opted to create more files rather than be clever
+$patterns: (
+  "orange": (
+    top: url('assets/svg/square-dot-orange-top.svg'),
+    right: url('assets/svg/square-dot-orange-right.svg'),
+    bottom: url('assets/svg/square-dot-orange-vert.svg'),
+    left: url('assets/svg/square-dot-orange-horiz.svg'),
+  ),
+  "gray": (
+    top: url('assets/svg/square-dot-gray-top.svg'),
+    right: url('assets/svg/square-dot-gray-right.svg'),
+    bottom: url('assets/svg/square-dot-gray-vert.svg'),
+    left: url('assets/svg/square-dot-gray-horiz.svg'),
+  ),
+);
+
+@each $color, $directions in $patterns {
+  @each $direction, $url in $directions {
+    .background-dots__#{$color}--#{$direction} {
+      background-image: $url;
+	  
+      // Add specific alignment for each direction
+      @if $direction == top {
+		  background-position: top center;
+		  background-repeat: repeat-x;
+		  background-position: center top;
+		} @else if $direction == right {
+			background-position: center right;
+			background-repeat: repeat-y;
+			background-position: right;
+		} @else if $direction == bottom {
+			background-position: bottom center;
+			background-repeat: repeat-x;
+			background-position: center bottom;
+		} @else if $direction == left {
+			background-position: center left;
+			background-repeat: repeat-y;
+			background-position: left;
+      }
+
+    }
+  }
+}
+
+// TODO: Developed vanilla in parallel, can be merged with code above
+/* Background Pattern - Light Gray Dots */
+.background-dots__light-gray--top {
+    background-image: url(/wp-content/uploads/2023/08/square-dots-01.svg);
+    background-position: top center;
+    background-repeat: repeat-x;
+    background-position: center top;
+}
+
+// Background Blend Modes; uncomment as classes are needed. This reduces page resource calls for patterns/etc
+// Make this into a map/function if it gets any more complex
+.is-style--background-blend-mode{
+	&--color-burn {
+		background-blend-mode: color-burn;
+	}
+
+	&--multiply {
+		background-blend-mode: multiply;
+	}
+
+	&--screen {
+		background-blend-mode: screen;
+	}
+
+	&--color-dodge {
+		background-blend-mode: color-dodge;
+	}
+
+	&--normal {
+		background-blend-mode: normal;
+	}
+}
+
+// Stray gradient classes (make mixin if there are any more of these)
+.bg_gradient-clear-to-white-left-right {
+    background: linear-gradient(270deg,rgb(255,255,255) 73%,rgba(255,255,255,0) 73%);
+}
+.bg_gradient-light-to-smokey-top-bottom {
+    background: linear-gradient(180deg,var(--wp--preset--color--light) 73%,var(--wp--preset--color--smokey) 73%);
+}

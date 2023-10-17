@@ -1,0 +1,19 @@
+/* Stats Rows */
+.stat-group-container {
+    position: relative;
+
+    &:after {
+        position: absolute;
+        content: "";
+        height: 4rem;
+        background-color: #ff8200;
+        width: 2px;
+        margin-left: 0;
+        top: 1rem;
+        right: 0;
+    }
+}
+
+.stats-row-with-background > span.wp-block-cover__background {
+    opacity: 0.95 !important;
+}

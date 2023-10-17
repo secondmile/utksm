@@ -1,4 +1,4 @@
-console.log('BIKI: editor-functions.js script loaded');
+// console.log('BIKI: editor-functions.js script loaded');
 
 wp.domReady(function () {
    wp.blocks.registerBlockStyle('core/paragraph', {
