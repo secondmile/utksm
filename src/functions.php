@@ -73,7 +73,7 @@ function enqueue_scripts() {
     wp_enqueue_script('jquery');
 
      // Enqueue your custom script with ACF as a dependency
-     wp_enqueue_script('gform-ajax-submit', get_stylesheet_directory_uri() . '/assets/js/gformAjaxSubmit.js', array('jquery', 'acf'), '1.0', true);
+     wp_enqueue_script('find-your-counselor-filter', get_stylesheet_directory_uri() . '/assets/js/findYourCounselorFilter.js', array('jquery', 'acf'), '1.0', true);
      wp_enqueue_script('perfmatters-youtube-embed', get_stylesheet_directory_uri() . '/assets/js/perfmattersYoutubeEmbed.js', array('jquery', 'acf'), '1.0', true);
 }
 add_action('wp_enqueue_scripts', 'enqueue_scripts');

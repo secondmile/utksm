@@ -1,5 +1,15 @@
 document.addEventListener('DOMContentLoaded', function () {
 
+    /*
+        Advanced Custom Field: Stores Data (post type: Counselor; taxonomies attached)
+        Gravity Forms: Handles the form submission
+        Gravity Wiz | Gravity Forms + Custom Post Types: Connects the form and data automatically
+        Wordpress API | Counselor Post types
+
+        This script retrieves the ID's of the current gForm selection and matches them against the data in each Counselor object (populated by ACF) then filters the results down progressively in returned results
+        Originally conceived as a traditional filter, it was later decided to return only one result
+    */
+
     // This selector must be present on the page for anything more to fire
     const resultsSelector = document.querySelector('.sm--counselor-query-block');
   
@@ -114,8 +124,9 @@ document.addEventListener('DOMContentLoaded', function () {
             'schools-knox': 18,
             'schools-blount': 19,
             'schools-hamilton': 20,
-            'schools-middle-tennessee': 21,
-            'schools-middle-tennessee': 22,
+            // 'schools-middle-tennessee': 21,
+            'schools-davidson': 23,
+            'schools-montgomery': 24,
         }
 
         const fieldSelectors = {};
@@ -219,8 +230,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const schoolsInKnoxField = formSelector.querySelector(fieldSelectors['schools-knox']);
         const schoolsInBlountField = formSelector.querySelector(fieldSelectors['schools-blount']);
         const schoolsInHamiltonField = formSelector.querySelector(fieldSelectors['schools-hamilton']);
-        const schoolsInShelbyField = formSelector.querySelector(fieldSelectors['schools-shelby']);
-        const schoolsInMiddleTennesseeField = formSelector.querySelector(fieldSelectors['schools-middle-tennessee']);
+        const schoolsInDavidsonField = formSelector.querySelector(fieldSelectors['schools-davidson']);
+        const schoolsInMontgomeryField = formSelector.querySelector(fieldSelectors['schools-montgomery']);
+        // const schoolsInMiddleTennesseeField = formSelector.querySelector(fieldSelectors['schools-middle-tennessee']);
 
         // Top-level selections clear child selections when changed
         specializationField.addEventListener('change', () => {
@@ -235,8 +247,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 schoolsInKnoxField,
                 schoolsInBlountField,
                 schoolsInHamiltonField,
-                schoolsInShelbyField,
-                schoolsInMiddleTennesseeField,
+                schoolsInDavidsonField,
+                schoolsInMontgomeryField,
+                // schoolsInMiddleTennesseeField,
             );
 
             updateSelectedFilters();
@@ -253,8 +266,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 schoolsInKnoxField,
                 schoolsInBlountField,
                 schoolsInHamiltonField,
-                schoolsInShelbyField,
-                schoolsInMiddleTennesseeField,
+                schoolsInDavidsonField,
+                schoolsInMontgomeryField,
+                // schoolsInMiddleTennesseeField,
             );
 
             updateSelectedFilters();
@@ -271,8 +285,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 schoolsInKnoxField,
                 schoolsInBlountField,
                 schoolsInHamiltonField,
-                schoolsInShelbyField,
-                schoolsInMiddleTennesseeField,
+                schoolsInDavidsonField,
+                schoolsInMontgomeryField,
+                // schoolsInMiddleTennesseeField,
             );
 
             updateSelectedFilters();
@@ -283,8 +298,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 schoolsInKnoxField,
                 schoolsInBlountField,
                 schoolsInHamiltonField,
-                schoolsInShelbyField,
-                schoolsInMiddleTennesseeField,
+                schoolsInDavidsonField,
+                schoolsInMontgomeryField,
+                // schoolsInMiddleTennesseeField,
             );
 
             updateSelectedFilters();
