@@ -86,6 +86,9 @@ if (get_post_type($post_id) === 'counselor' && $post_id) {
     $counselor_schools_blount = isset($fields['array']['schools-blount']) ? get_term_names_as_list($fields['array']['schools-blount']) : '';
     $counselor_schools_hamilton = isset($fields['array']['schools-hamilton']) ? get_term_names_as_list($fields['array']['schools-hamilton']) : '';
     $counselor_schools_knox = isset($fields['array']['schools-knox']) ? get_term_names_as_list($fields['array']['schools-knox']) : '';
+    $counselor_schools_montgomery = isset($fields['array']['schools-montgomery']) ? get_term_names_as_list($fields['array']['schools-montgomery']) : '';
+    $counselor_schools_davidson = isset($fields['array']['schools-davidson']) ? get_term_names_as_list($fields['array']['schools-davidson']) : '';
+    $counselor_schools_shelby = isset($fields['array']['schools-shelby']) ? get_term_names_as_list($fields['array']['schools-shelby']) : '';
     
 
     $counties_in_tennessee = !empty($fields['array']['counties-in-tennessee']) ? get_term_names_as_list($fields['array']['counties-in-tennessee']) : '';
@@ -96,6 +99,9 @@ if (get_post_type($post_id) === 'counselor' && $post_id) {
     $schools_in_blount = !empty($fields['array']['schools-blount']) ? get_term_names_as_list($fields['array']['schools-blount']) : '';
     $schools_in_hamilton = !empty($fields['array']['schools-hamilton']) ? get_term_names_as_list($fields['array']['schools-hamilton']) : '';
     $schools_in_knox = !empty($fields['array']['schools-knox']) ? get_term_names_as_list($fields['array']['schools-knox']) : '';
+    $schools_in_montgomery = !empty($fields['array']['schools-montgomery']) ? get_term_names_as_list($fields['array']['schools-montgomery']) : '';
+    $schools_in_davidson = !empty($fields['array']['schools-davidson']) ? get_term_names_as_list($fields['array']['schools-davidson']) : '';
+    $schools_in_shelby = !empty($fields['array']['schools-shelby']) ? get_term_names_as_list($fields['array']['schools-shelby']) : '';
 
     function generate_counties_html($title, $content) {
         if (!empty($content)) {
@@ -172,7 +178,10 @@ if (get_post_type($post_id) === 'counselor' && $post_id) {
 <?php 
     echo !empty($schools_in_knox) ? generate_counties_html('Schools in Knox County', $schools_in_knox) : '';
     echo !empty($schools_in_blount) ? generate_counties_html('Schools in Blount County', $schools_in_blount) : '';
+    echo !empty($schools_in_davidson) ? generate_counties_html('Schools in Davidson County', $schools_in_davidson) : '';
     echo !empty($schools_in_hamilton) ? generate_counties_html('Schools in Hamilton County', $schools_in_hamilton) : '';
+    echo !empty($schools_in_montgomery) ? generate_counties_html('Schools in Montgomery County', $schools_in_montgomery) : '';
+    echo !empty($schools_in_shelby) ? generate_counties_html('Schools in Shelby County', $schools_in_shelby) : '';
 ?>
 </div>
 <!-- /wp:column -->
