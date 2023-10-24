@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function () {
             'schools-knox': 18,
             'schools-blount': 19,
             'schools-hamilton': 20,
-            // 'schools-middle-tennessee': 21,
+            'schools-shelby': 22,
             'schools-davidson': 23,
             'schools-montgomery': 24,
         }
@@ -232,7 +232,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const schoolsInHamiltonField = formSelector.querySelector(fieldSelectors['schools-hamilton']);
         const schoolsInDavidsonField = formSelector.querySelector(fieldSelectors['schools-davidson']);
         const schoolsInMontgomeryField = formSelector.querySelector(fieldSelectors['schools-montgomery']);
-        // const schoolsInMiddleTennesseeField = formSelector.querySelector(fieldSelectors['schools-middle-tennessee']);
+        const schoolsInShelbyField = formSelector.querySelector(fieldSelectors['schools-shelby']);
 
         // Top-level selections clear child selections when changed
         specializationField.addEventListener('change', () => {
@@ -249,7 +249,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 schoolsInHamiltonField,
                 schoolsInDavidsonField,
                 schoolsInMontgomeryField,
-                // schoolsInMiddleTennesseeField,
+                schoolsInShelbyField,
             );
 
             updateSelectedFilters();
@@ -268,7 +268,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 schoolsInHamiltonField,
                 schoolsInDavidsonField,
                 schoolsInMontgomeryField,
-                // schoolsInMiddleTennesseeField,
+                schoolsInShelbyField,
             );
 
             updateSelectedFilters();
@@ -287,7 +287,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 schoolsInHamiltonField,
                 schoolsInDavidsonField,
                 schoolsInMontgomeryField,
-                // schoolsInMiddleTennesseeField,
+                schoolsInShelbyField,
             );
 
             updateSelectedFilters();
@@ -300,7 +300,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 schoolsInHamiltonField,
                 schoolsInDavidsonField,
                 schoolsInMontgomeryField,
-                // schoolsInMiddleTennesseeField,
+                schoolsInShelbyField,
             );
 
             updateSelectedFilters();
