@@ -95,3 +95,26 @@ $patterns: (
 .bg_gradient-light-to-smokey-top-bottom {
     background: linear-gradient(180deg,var(--wp--preset--color--light) 73%,var(--wp--preset--color--smokey) 73%);
 }
+
+/* Pattern - Overlap Group with Negative Margin  */
+.overlay-negative-margin-group {
+    margin-bottom: -15rem !important;
+}
+
+.overlay-negative-margin-group .has-smokey-background-color .wp-block-media-text__content {
+    background-color: var(--wp--preset--color--smokey);
+}
+
+/* Override Theme Gradient Preset on Mobile + Mobile Styles */
+@media only screen and (max-width: 780px) {
+    .has-white-to-clear-gradient-background {
+        background: linear-gradient(90deg,rgb(255,255,255) 100%,rgba(255,255,255,0) 100%) !important;
+    }
+    /* Stat Group Styles */
+    .stat-group-container:after {
+        background-color: unset;
+    }
+    .date-group-container {
+        border-right: unset;
+    }
+}

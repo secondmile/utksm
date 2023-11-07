@@ -36,6 +36,11 @@ $box-shadow-directions: (
   }
 }
 
+// Stray box-shadow style in use
+.box-shadow_smokey__bottom-left--large {
+    box-shadow: -20px 20px 0 0 var(--wp--preset--color--smokey);
+}
+
 /* Border */
 .has-border-primary {
 	border: 1px solid var(--wp--preset--color--orange);

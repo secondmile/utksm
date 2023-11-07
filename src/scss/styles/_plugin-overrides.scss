@@ -1,0 +1,7 @@
+// Plugin overrides (outside component scope & extremely specific selectors.
+// If it looks fragile, feels fragile, IS fragile...best case scenario, dont' have it. But if you must, put it here
+
+/* Hiding the Text before the form on the Self Guided tour page */
+#form_question_db6e2f66-7c49-453b-a9ec-a7cbbffb4e71 {
+    display: none !important;
+}

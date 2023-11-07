@@ -20,3 +20,9 @@
     max-width: 300px;
     margin-bottom: 2rem;
 }
+
+/* Footer Menu */
+.footer-menu p.has-white-color > a {
+    color: var(--wp--preset--color--white) !important;
+    text-decoration: none;
+}
