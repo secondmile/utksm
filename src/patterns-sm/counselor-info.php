@@ -137,6 +137,12 @@ if (get_post_type($post_id) === 'counselor' && $post_id) {
 
 <!-- wp:paragraph {"align":"left","className":"is-style-utkwds-fancy-link","fontSize":"normal"} -->
 <p class="has-text-align-left is-style-utkwds-fancy-link has-normal-font-size"><?= $counselor_misc; ?></p>
+<hr>
+<div class="wp-block-group alignwide utkwds-jump-link-group has-global-padding is-layout-constrained wp-container-15 wp-block-group-is-layout-constrained" style="border-style:none;border-width:0px;padding-top:var(--wp--preset--spacing--x-small);padding-right:0;padding-bottom:var(--wp--preset--spacing--x-small);padding-left:0">
+    <ul class="alignleft is-style-no-disc utkwds-jump-link-list sm-jump-link-list has-small-font-size">
+        <li class="has-small-font-size"><strong><a href="#more-info">Schools <?= strip_tags(get_the_title($post_id)); ?> Specializes In</a></strong></li>
+    </ul>
+</div>
 <!-- /wp:paragraph -->
 <!-- /wp:group --></div>
 <!-- /wp:column --></div>
@@ -147,7 +153,7 @@ if (get_post_type($post_id) === 'counselor' && $post_id) {
 <!-- wp:block {"ref":437} /-->
 
 <!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|large","bottom":"var:preset|spacing|large","left":"var:preset|spacing|small","right":"var:preset|spacing|small"},"margin":{"top":"0","bottom":"0"}}},"layout":{"type":"default"}} -->
-<div class="wp-block-group alignfull" style="margin-top:0;margin-bottom:0;padding-top:var(--wp--preset--spacing--large);padding-right:var(--wp--preset--spacing--small);padding-bottom:var(--wp--preset--spacing--large);padding-left:var(--wp--preset--spacing--small)"><!-- wp:group {"layout":{"type":"constrained"}} -->
+<div id="more-info" class="wp-block-group alignfull" style="margin-top:0;margin-bottom:0;padding-top:var(--wp--preset--spacing--large);padding-right:var(--wp--preset--spacing--small);padding-bottom:var(--wp--preset--spacing--large);padding-left:var(--wp--preset--spacing--small)"><!-- wp:group {"layout":{"type":"constrained"}} -->
 <div class="wp-block-group"><!-- wp:columns -->
 
 <div class="wp-block-columns"><!-- wp:column -->
