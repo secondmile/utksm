@@ -1,13 +1,16 @@
 document.addEventListener('DOMContentLoaded', function () {
 
     /*
-        Advanced Custom Field: Stores Data (post type: Counselor; taxonomies attached)
+        Advanced Custom Fields: Stores Data (post type: Counselor; taxonomies attached)
         Gravity Forms: Handles the form submission
         Gravity Wiz | Gravity Forms + Custom Post Types: Connects the form and data automatically
-        Wordpress API | Counselor Post types
+        Gutenberg Editor: Implementing the gravity form & the results area (using results selector)
+        Wordpress API | Counselor Post types: Fetching stored data
+        
+        Author: SecondMile, Becky 🐝🗝️
 
         This script retrieves the ID's of the current gForm selection and matches them against the data in each Counselor object (populated by ACF) then filters the results down progressively in returned results
-        Originally conceived as a traditional filter, it was later decided to return only one result
+        Originally conceived as a traditional filter returning multiple results, it was later decided to return a mixture of singular results and multiple depending on counselor type
     */
 
     // This selector must be present on the page for anything more to fire
@@ -22,6 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let localCounselorData = [];
     const selectedFilters = [];
     let filteredData = [];
+    let allowsMultipleResults = false;
     
     // API call to pull the data (currently on load; optimally less than that)
     function updateData() {
@@ -46,7 +50,6 @@ document.addEventListener('DOMContentLoaded', function () {
             })
     }
 
-    // BIKI: activate this after main production concludes
     // Periodically update data (twice a day)
     // setInterval(updateData, 12 * 60 * 60 * 1000); // 12 hours
     updateData();
@@ -115,7 +118,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const gravityFormInputs = {
             'specializations': 16,
             'states': 8,
-            'countries': 9,
             'counties-in-tennessee': 10,
             'counties-in-texas': 11,
             'counties-in-north-carolina': 12,
@@ -221,7 +223,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const specializationField = formSelector.querySelector(fieldSelectors.specializations);
         const statesField = formSelector.querySelector(fieldSelectors.states);
-        const countriesField = formSelector.querySelector(fieldSelectors.countries);
         const countiesInTennesseeField = formSelector.querySelector(fieldSelectors['counties-in-tennessee']);
         const countiesInTexasField = formSelector.querySelector(fieldSelectors['counties-in-texax']);
         const countiesInNorthCarolinaField = formSelector.querySelector(fieldSelectors['counties-in-north-carolina']);
@@ -238,7 +239,6 @@ document.addEventListener('DOMContentLoaded', function () {
         specializationField.addEventListener('change', () => {
             clearFields(
                 statesField,
-                countriesField,
                 countiesInTennesseeField,
                 countiesInCaliforniaField,
                 countiesInTexasField,
@@ -257,26 +257,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         statesField.addEventListener('change', () => {
             clearFields(
-                countriesField,
-                countiesInTennesseeField,
-                countiesInCaliforniaField,
-                countiesInTexasField,
-                countiesInGeorgiaField,
-                countiesInNorthCarolinaField,
-                schoolsInKnoxField,
-                schoolsInBlountField,
-                schoolsInHamiltonField,
-                schoolsInDavidsonField,
-                schoolsInMontgomeryField,
-                schoolsInShelbyField,
-            );
-
-            updateSelectedFilters();
-        });
-        
-        countriesField.addEventListener('change', () => {
-            clearFields(
-                statesField,
                 countiesInTennesseeField,
                 countiesInCaliforniaField,
                 countiesInTexasField,
@@ -320,6 +300,19 @@ document.addEventListener('DOMContentLoaded', function () {
     function generateMarkupFromData(data) {
         // Process the filtered data and generate HTML markup
         let markup = '';
+
+        // Key/value pairs (gForms) control if we allow multiple counselor results (false by default)
+        const allowMultipleResultsCritera = [
+            { key: 'counselor-specialization', value: 15 },
+        ];
+
+        // Check if any of the objects in the array contain key/value pairs we want associated with multiple results
+        const allowsMultipleResults = data.some(item => {
+            return allowMultipleResultsCritera.every(criteria => {
+                const { key, value } = criteria;
+                return Array.isArray(item[key]) && item[key].includes(value);
+            });
+        });
     
         if (data.length === 0) {
             setTimeout(() => {
@@ -327,8 +320,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }, 500);
             // Display an error message if no counselors are found
             markup = '<p class="error-message">No counselors found for the selected criteria. Consider broadening your search or changing your filters.</p>';
-        } else if(data.length > 1) {
-            // If there is more than one result, guide the user to keep making selections
+        } else if(data.length > 1 && allowsMultipleResults === false) {
+            // If there is more than one result and we want only one result shown, guide the user to keep making selections
             setTimeout(() => {
                 resultsSelector.classList.remove('fade');
             }, 500);
