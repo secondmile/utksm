@@ -332,7 +332,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const resultsSelector = document.querySelector('.sm--counselor-query-block');
     
             // Block Wrapper Classes (not items)
-            const blockLayoutClasses = 'counselor-loop__ul columns-3 wp-block-post-template has-base-font-size is-layout-grid wp-container-24 wp-block-post-template-is-layout-grid';
+            const blockLayoutClasses = 'counselor-loop__ul columns-3 wp-block-post-template has-base-font-size is-layout-grid wp-block-post-template-is-layout-grid';
     
             if (resultsSelector) {
                 // Loop through the data and generate markup

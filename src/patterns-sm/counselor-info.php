@@ -158,10 +158,11 @@ if (get_post_type($post_id) === 'counselor' && $post_id) {
 
 <div class="wp-block-columns"><!-- wp:column -->
 <div class="wp-block-column"><!-- wp:heading {"level":4,"fontSize":"small"} -->
-<h4 class="wp-block-heading has-small-font-size"><strong>States</strong></h4>
 <!-- /wp:heading -->
 <!-- wp:list -->
-<?= $counselor_states; ?>
+<?php
+    echo !empty($counselor_states) ? generate_counties_html('States', $counselor_states) : '';
+?>
 </div>
 <!-- /wp:column -->
 
