@@ -1,3 +1,42 @@
+// Fixes Post-WDS Overflow Update
+// SAFARI overflow needs more hyphenation specificity or it breaks larger words all over the place
+@supports (-webkit-hyphenate-limit-after: auto) {
+
+    h1, h2, h3, h4, h5, h6 {
+      -webkit-hyphenate-limit-after: 8;
+      -webkit-hyphenate-limit-before: 8;
+    }
+}
+
+// When to use this: In a hero, with very large h1, half-width content, AND very long word. Using "International" as word of choice given its site prevalence
+// Where to apply it: Columns
+
+body {
+    --wp--preset--font-size--xx-large: clamp(2.8rem, 2.8rem + ((1vw - 0.2rem) * 1.9), 4.653rem);
+}
+
+.hero--xx-large--font-fix {
+
+    @media (max-width: 1499px) {
+        // --middle-clamp-value: min(2.8rem + (2.513 * (1vw - 0.2rem)), 73px);
+        --middle-clamp-value: min(2.8rem + ((1vw - 0.4rem) * 2), 73px);
+        
+        --wp--preset--font-size--xx-large: clamp(2.8rem, var(--middle-clamp-value), 4.4rem)!important;
+    }
+
+    // 1465px comes from inspecting "International" within giant chonker headers. It's a long word, it's all over the site
+    // And in these hero-instances where we have extra large font and are only using 50% of the screen, we need to compensate for text wrapping
+    @media (max-width: 1199px) {
+        --wp--preset--font-size--xx-large: clamp(2.8rem, 2.8rem + ((1vw - 0.2rem) * 2.513), 4.653rem);
+        
+        flex-direction: column;
+
+        & > div {
+            margin-top: 0!important;
+        }
+    }
+}
+
 /* Fix WDS Font Weight on Headings */
 h1, h2, h3, h4, h5, h6 {
     font-weight: 900 !important;
