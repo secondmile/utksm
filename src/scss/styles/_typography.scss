@@ -19,9 +19,9 @@ body {
 
     @media (max-width: 1499px) {
         // --middle-clamp-value: min(2.8rem + (2.513 * (1vw - 0.2rem)), 73px);
-        --middle-clamp-value: min(2.8rem + ((1vw - 0.4rem) * 2), 73px);
+        --middle-clamp-value: min(1.8rem + ((1vw - 0.4rem) * 2), 73px);
         
-        --wp--preset--font-size--xx-large: clamp(2.8rem, var(--middle-clamp-value), 4.4rem)!important;
+        --wp--preset--font-size--xx-large: clamp(1.8rem, var(--middle-clamp-value), 4.4rem)!important;
     }
 
     // 1465px comes from inspecting "International" within giant chonker headers. It's a long word, it's all over the site
