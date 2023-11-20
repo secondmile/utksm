@@ -128,7 +128,7 @@ if (get_post_type($post_id) === 'counselor' && $post_id) {
 <!-- wp:column {"verticalAlignment":"center","width":"60%","style":{"spacing":{"padding":{"top":"var:preset|spacing|medium","bottom":"var:preset|spacing|medium","left":"var:preset|spacing|medium","right":"var:preset|spacing|medium"}}},"backgroundColor":"light"} -->
 <div class="wp-block-column is-vertically-aligned-center has-light-background-color has-background" style="padding-top:var(--wp--preset--spacing--medium);padding-right:var(--wp--preset--spacing--medium);padding-bottom:var(--wp--preset--spacing--medium);padding-left:var(--wp--preset--spacing--medium);flex-basis:60%"><!-- wp:group {"layout":{"type":"constrained","wideSize":"","justifyContent":"left"}} -->
 <div class="wp-block-group"><!-- wp:heading {"textAlign":"left","style":{"spacing":{"margin":{"bottom":"0px"}}},"className":"wp-block-heading"} -->
-<h1 class="is-larger-text wp-block-heading has-text-align-left" style="margin-bottom:0px"><?= get_the_title($post_id); ?></h1>
+<h1 class="x-text wp-block-heading has-text-align-left" style="margin-bottom:0px"><?= get_the_title($post_id); ?></h1>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"textColor":"smokey","fontSize":"small"} -->

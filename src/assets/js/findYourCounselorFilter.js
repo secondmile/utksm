@@ -380,7 +380,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // 'counselor_slate_url': fieldValue => '',
             'counselor_slate_url': fieldValue => `${fieldValue}`,
             'counselor_title': (fieldValue) => {
-                return `<div class="counselor-loop__title"><a href="${counselorSlateUrl}" target="_blank">${fieldValue}</a></div>`;
+                return `<div class="counselor-loop__title"><a href="${counselorSlateUrl}">${fieldValue}</a></div>`;
             },
             
             // These work but exceed scope of current design
