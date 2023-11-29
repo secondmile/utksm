@@ -89,7 +89,6 @@ if (get_post_type($post_id) === 'counselor' && $post_id) {
     $counselor_schools_montgomery = isset($fields['array']['schools-montgomery']) ? get_term_names_as_list($fields['array']['schools-montgomery']) : '';
     $counselor_schools_davidson = isset($fields['array']['schools-davidson']) ? get_term_names_as_list($fields['array']['schools-davidson']) : '';
     $counselor_schools_shelby = isset($fields['array']['schools-shelby']) ? get_term_names_as_list($fields['array']['schools-shelby']) : '';
-    
 
     $counties_in_tennessee = !empty($fields['array']['counties-in-tennessee']) ? get_term_names_as_list($fields['array']['counties-in-tennessee']) : '';
     $counties_in_california = !empty($fields['array']['counties-in-california']) ? get_term_names_as_list($fields['array']['counties-in-california']) : '';
@@ -140,7 +139,7 @@ if (get_post_type($post_id) === 'counselor' && $post_id) {
 <hr>
 <div class="wp-block-group alignwide utkwds-jump-link-group has-global-padding is-layout-constrained wp-container-15 wp-block-group-is-layout-constrained" style="border-style:none;border-width:0px;padding-top:var(--wp--preset--spacing--x-small);padding-right:0;padding-bottom:var(--wp--preset--spacing--x-small);padding-left:0">
     <ul class="alignleft is-style-no-disc utkwds-jump-link-list sm-jump-link-list has-small-font-size">
-        <li class="has-small-font-size"><strong><a href="#more-info">Schools <?= strip_tags(get_the_title($post_id)); ?> Specializes In</a></strong></li>
+        <li class="has-small-font-size"><strong><a href="#more-info">See What Areas & Schools <?= strip_tags(get_the_title($post_id)); ?> Supports</a></strong></li>
     </ul>
 </div>
 <!-- /wp:paragraph -->
@@ -150,48 +149,63 @@ if (get_post_type($post_id) === 'counselor' && $post_id) {
 <!-- /wp:group --></div>
 <!-- /wp:group -->
 
-<!-- wp:block {"ref":437} /-->
 
-<!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|large","bottom":"var:preset|spacing|large","left":"var:preset|spacing|small","right":"var:preset|spacing|small"},"margin":{"top":"0","bottom":"0"}}},"layout":{"type":"default"}} -->
-<div id="more-info" class="wp-block-group alignfull" style="margin-top:0;margin-bottom:0;padding-top:var(--wp--preset--spacing--large);padding-right:var(--wp--preset--spacing--small);padding-bottom:var(--wp--preset--spacing--large);padding-left:var(--wp--preset--spacing--small)"><!-- wp:group {"layout":{"type":"constrained"}} -->
-<div class="wp-block-group"><!-- wp:columns -->
-
-<div class="wp-block-columns"><!-- wp:column -->
-<div class="wp-block-column"><!-- wp:heading {"level":4,"fontSize":"small"} -->
-<!-- /wp:heading -->
-<!-- wp:list -->
 <?php
-    echo !empty($counselor_states) ? generate_counties_html('States', $counselor_states) : '';
-?>
-</div>
-<!-- /wp:column -->
+// Everything beyond this point displays school data -- some counselors don't have that data and we need to show/hide this section conditionally.
 
-<!-- wp:column -->
-<div class="wp-block-column"><!-- wp:heading {"level":4,"fontSize":"small"} -->
-<!-- /wp:heading -->
-<?php 
-    echo !empty($counties_in_tennessee) ? generate_counties_html('Counties in Tennessee', $counties_in_tennessee) : '';
-    echo !empty($counties_in_california) ? generate_counties_html('Counties in California', $counties_in_california) : '';
-    echo !empty($counties_in_texas) ? generate_counties_html('Counties in Texas', $counties_in_texas) : '';
-    echo !empty($counties_in_georgia) ? generate_counties_html('Counties in Georgia', $counties_in_georgia) : '';
-    echo !empty($counties_in_north_carolina) ? generate_counties_html('Counties in Nort Carolina', $counties_in_north_carolina) : '';
-?>
-</div>
-<!-- /wp:column -->
 
-<!-- wp:column -->
-<div class="wp-block-column"><!-- wp:heading {"level":4,"fontSize":"small"} -->
-<!-- /wp:heading -->
-<?php 
-    echo !empty($schools_in_knox) ? generate_counties_html('Schools in Knox County', $schools_in_knox) : '';
-    echo !empty($schools_in_blount) ? generate_counties_html('Schools in Blount County', $schools_in_blount) : '';
-    echo !empty($schools_in_davidson) ? generate_counties_html('Schools in Davidson County', $schools_in_davidson) : '';
-    echo !empty($schools_in_hamilton) ? generate_counties_html('Schools in Hamilton County', $schools_in_hamilton) : '';
-    echo !empty($schools_in_montgomery) ? generate_counties_html('Schools in Montgomery County', $schools_in_montgomery) : '';
-    echo !empty($schools_in_shelby) ? generate_counties_html('Schools in Shelby County', $schools_in_shelby) : '';
+$hide_school_data = strip_tags($counselor_specialization) === "International Student" ? true : false;
+
+if ( $hide_school_data ) {
+    // Display nothing
+} else {
+    ?>
+
+    <!-- wp:block {"ref":437} /-->
+
+    <!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|large","bottom":"var:preset|spacing|large","left":"var:preset|spacing|small","right":"var:preset|spacing|small"},"margin":{"top":"0","bottom":"0"}}},"layout":{"type":"default"}} -->
+    <div id="more-info" class="wp-block-group alignfull" style="margin-top:0;margin-bottom:0;padding-top:var(--wp--preset--spacing--large);padding-right:var(--wp--preset--spacing--small);padding-bottom:var(--wp--preset--spacing--large);padding-left:var(--wp--preset--spacing--small)"><!-- wp:group {"layout":{"type":"constrained"}} -->
+    <div class="wp-block-group"><!-- wp:columns -->
+
+    <div class="wp-block-columns"><!-- wp:column -->
+    <div class="wp-block-column"><!-- wp:heading {"level":4,"fontSize":"small"} -->
+    <!-- /wp:heading -->
+    <!-- wp:list -->
+    <?php
+        echo !empty($counselor_states) ? generate_counties_html('States', $counselor_states) : '';
+    ?>
+    </div>
+    <!-- /wp:column -->
+
+    <!-- wp:column -->
+    <div class="wp-block-column"><!-- wp:heading {"level":4,"fontSize":"small"} -->
+    <!-- /wp:heading -->
+    <?php 
+        echo !empty($counties_in_tennessee) ? generate_counties_html('Counties in Tennessee', $counties_in_tennessee) : '';
+        echo !empty($counties_in_california) ? generate_counties_html('Counties in California', $counties_in_california) : '';
+        echo !empty($counties_in_texas) ? generate_counties_html('Counties in Texas', $counties_in_texas) : '';
+        echo !empty($counties_in_georgia) ? generate_counties_html('Counties in Georgia', $counties_in_georgia) : '';
+        echo !empty($counties_in_north_carolina) ? generate_counties_html('Counties in Nort Carolina', $counties_in_north_carolina) : '';
+    ?>
+    </div>
+    <!-- /wp:column -->
+
+    <!-- wp:column -->
+    <div class="wp-block-column"><!-- wp:heading {"level":4,"fontSize":"small"} -->
+    <!-- /wp:heading -->
+    <?php 
+        echo !empty($schools_in_knox) ? generate_counties_html('Schools in Knox County', $schools_in_knox) : '';
+        echo !empty($schools_in_blount) ? generate_counties_html('Schools in Blount County', $schools_in_blount) : '';
+        echo !empty($schools_in_davidson) ? generate_counties_html('Schools in Davidson County', $schools_in_davidson) : '';
+        echo !empty($schools_in_hamilton) ? generate_counties_html('Schools in Hamilton County', $schools_in_hamilton) : '';
+        echo !empty($schools_in_montgomery) ? generate_counties_html('Schools in Montgomery County', $schools_in_montgomery) : '';
+        echo !empty($schools_in_shelby) ? generate_counties_html('Schools in Shelby County', $schools_in_shelby) : '';
+    ?>
+    </div>
+    <!-- /wp:column -->
+    <!-- /wp:columns --></div>
+    <!-- /wp:group --></div>
+    <!-- /wp:group -->
+    <?php
+}
 ?>
-</div>
-<!-- /wp:column -->
-<!-- /wp:columns --></div>
-<!-- /wp:group --></div>
-<!-- /wp:group -->
