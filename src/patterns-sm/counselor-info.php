@@ -102,6 +102,8 @@ if (get_post_type($post_id) === 'counselor' && $post_id) {
     $schools_in_davidson = !empty($fields['array']['schools-davidson']) ? get_term_names_as_list($fields['array']['schools-davidson']) : '';
     $schools_in_shelby = !empty($fields['array']['schools-shelby']) ? get_term_names_as_list($fields['array']['schools-shelby']) : '';
 
+    $hide_school_data = strip_tags($counselor_specialization) === "International Student" ? true : false;
+
     function generate_counties_html($title, $content) {
         if (!empty($content)) {
             return "
@@ -136,12 +138,21 @@ if (get_post_type($post_id) === 'counselor' && $post_id) {
 
 <!-- wp:paragraph {"align":"left","className":"is-style-utkwds-fancy-link","fontSize":"normal"} -->
 <p class="has-text-align-left is-style-utkwds-fancy-link has-normal-font-size"><?= $counselor_misc; ?></p>
+
+<?php
+
+if ($hide_school_data) {
+    // No button or school data for you
+} else {
+    // Button linking to school data
+?>
 <hr>
 <div class="wp-block-group alignwide utkwds-jump-link-group has-global-padding is-layout-constrained wp-container-15 wp-block-group-is-layout-constrained" style="border-style:none;border-width:0px;padding-top:var(--wp--preset--spacing--x-small);padding-right:0;padding-bottom:var(--wp--preset--spacing--x-small);padding-left:0">
     <ul class="alignleft is-style-no-disc utkwds-jump-link-list sm-jump-link-list has-small-font-size">
         <li class="has-small-font-size"><strong><a href="#more-info">See What Areas & Schools <?= strip_tags(get_the_title($post_id)); ?> Supports</a></strong></li>
     </ul>
 </div>
+<?php } ?>
 <!-- /wp:paragraph -->
 <!-- /wp:group --></div>
 <!-- /wp:column --></div>
@@ -152,9 +163,6 @@ if (get_post_type($post_id) === 'counselor' && $post_id) {
 
 <?php
 // Everything beyond this point displays school data -- some counselors don't have that data and we need to show/hide this section conditionally.
-
-
-$hide_school_data = strip_tags($counselor_specialization) === "International Student" ? true : false;
 
 if ( $hide_school_data ) {
     // Display nothing
@@ -206,6 +214,4 @@ if ( $hide_school_data ) {
     <!-- /wp:columns --></div>
     <!-- /wp:group --></div>
     <!-- /wp:group -->
-    <?php
-}
-?>
+<?php } ?>
