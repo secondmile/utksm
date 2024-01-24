@@ -301,9 +301,9 @@ document.addEventListener('DOMContentLoaded', function () {
         // Process the filtered data and generate HTML markup
         let markup = '';
 
-        // Key/value pairs (gForms) control if we allow multiple counselor results (false by default)
+        /* Multiple Results for ALL filter steps + Subsequent Steps */
         const allowMultipleResultsCritera = [
-            { key: 'counselor-specialization', value: 15 },
+            { key: 'counselor-specialization', value: 15 }
         ];
 
         // Check if any of the objects in the array contain key/value pairs we want associated with multiple results
@@ -313,6 +313,36 @@ document.addEventListener('DOMContentLoaded', function () {
                 return Array.isArray(item[key]) && item[key].includes(value);
             });
         });
+        
+        /* Multiple Results for SOME filter steps + Subsequent Steps */
+        const allowMixedResultsCriteria = [
+            // Every gForms key/value must be satisfied before multiple results are allowed (after which they remain allowed)
+            { 
+                keys: ['counselor-specialization', 'counselor-states'],
+                values: [14, 17]
+            }
+        ];
+        
+        // Check if any of the objects in the array contain key/value pairs we want associated with multiple results
+        const allowsMixedResults = data.every(item => {
+            return allowMixedResultsCriteria.every(criteria => {
+                const { keys, values } = criteria;
+        
+                // Check that at least one key-value pair in the criteria is present in the item
+                if (keys.every((key, index) => {
+                    const value = values[index];
+                    return Array.isArray(item[key]) && item[key].includes(value);
+                })) {
+                    // Within the selected item, check that all key-value pairs in the criteria are present
+                    return keys.every((key, index) => {
+                        const value = values[index];
+                        return Array.isArray(item[key]) && item[key].includes(value);
+                    });
+                }
+        
+                return false; // If none of the criteria match within this item
+            });
+        });
     
         if (data.length === 0) {
             setTimeout(() => {
@@ -320,13 +350,13 @@ document.addEventListener('DOMContentLoaded', function () {
             }, 500);
             // Display an error message if no counselors are found
             markup = '<p class="error-message">No counselors found for the selected criteria. Consider broadening your search or changing your filters.</p>';
-        } else if(data.length > 1 && allowsMultipleResults === false) {
+        } else if(data.length > 1 && allowsMultipleResults === false && allowsMixedResults === false) {
             // If there is more than one result and we want only one result shown, guide the user to keep making selections
             setTimeout(() => {
                 resultsSelector.classList.remove('fade');
             }, 500);
             markup = '<p class="error-message">Please continue selecting options to find the best counselor to best help you.</p>';
-        } 
+        }
         else {
             // Get the resultsSelector element
             const resultsSelector = document.querySelector('.sm--counselor-query-block');
