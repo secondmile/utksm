@@ -193,7 +193,7 @@ if ( $hide_school_data ) {
         echo !empty($counties_in_california) ? generate_counties_html('Counties in California', $counties_in_california) : '';
         echo !empty($counties_in_texas) ? generate_counties_html('Counties in Texas', $counties_in_texas) : '';
         echo !empty($counties_in_georgia) ? generate_counties_html('Counties in Georgia', $counties_in_georgia) : '';
-        echo !empty($counties_in_north_carolina) ? generate_counties_html('Counties in Nort Carolina', $counties_in_north_carolina) : '';
+        echo !empty($counties_in_north_carolina) ? generate_counties_html('Counties in North Carolina', $counties_in_north_carolina) : '';
     ?>
     </div>
     <!-- /wp:column -->
